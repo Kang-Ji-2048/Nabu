@@ -50,7 +50,10 @@ those vectors; the inventory itself is published only after discovery completes.
 
 The output directory contains `summary.md` for inspection, `categories.json`,
 `tickets.json`, `vectors.npz` and a version manifest. Keyword names are proposed
-automatically using weighted cluster terms. Each category includes representative
+automatically using weighted cluster terms from known titles, falling back to
+known description text when the title is unavailable. Numeric log values are
+excluded from label terms. Clustering and ticket retrieval still use title and
+description embeddings. Each category includes representative
 tickets and is marked `unreviewed`.
 
 ## Adding categories
@@ -111,6 +114,19 @@ Historical tests exclude later text and tickets. Graph tests verify that semanti
 results still pass citation validation and that resume keeps frozen documents and
 vectors. These tests establish behavior, not retrieval or prediction accuracy on
 real tickets. That requires relevance labels and held-out historical evaluation.
+
+The full Spring XD snapshot run indexed all 3,707 tickets and proposed 17
+categories, assigning 641 tickets and leaving 3,066 (82.7%) unassigned. This sparse
+inventory is a set of initial work topics, not a comprehensive classifier.
+All 3,707 tickets remain searchable. `data/categories/xd-v2/summary.md` lists the
+categories and representative tickets with the improved title-based labels.
+The refresh reused every embedding (`new_embeddings: 0`).
+
+Manual retrieval examples included "user authentication authorization security"
+returning XD-1694 ("Provide security integration") first, and "deploy custom
+modules packaging" returning XD-2089 ("Process for creating and deploying custom
+XD modules") first. Saved examples include lower-ranked results too; these are
+inspection examples, not an accuracy score.
 
 The real XD-238 cutoff (`2013-06-17T23:59:59.999999Z`) produced 188 eligible prior
 tickets, four proposed categories and 79 unassigned tickets. A local query about

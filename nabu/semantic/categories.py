@@ -70,7 +70,7 @@ def discover(items, index, *, min_cluster_size=15, min_samples=5):
         else:
             cluster_input = matrix
         labels = HDBSCAN(min_cluster_size=min_cluster_size, min_samples=min_samples,
-                         metric="euclidean", cluster_selection_method="leaf", n_jobs=2).fit_predict(cluster_input)
+                         metric="euclidean", cluster_selection_method="leaf", n_jobs=2, copy=False).fit_predict(cluster_input)
     groups = defaultdict(list)
     for position, label in enumerate(labels):
         if label >= 0:
@@ -78,9 +78,15 @@ def discover(items, index, *, min_cluster_size=15, min_samples=5):
     ordered = sorted(groups.values(), key=lambda positions: ids[min(positions)])
     keywords = {}
     if ordered:
-        texts = [text_of(items[item_id]) for item_id in ids]
+        # Titles explain the work; long traces/configuration often swamp descriptions.
+        texts = []
+        for item_id in ids:
+            item = items[item_id]
+            title = item["fields"]["title"] if "title" not in item["unknown_fields"] else None
+            texts.append(title if isinstance(title, str) and title.strip() else text_of(item))
         try:
-            vectorizer = CountVectorizer(stop_words="english", ngram_range=(1, 2), max_features=8000)
+            vectorizer = CountVectorizer(stop_words="english", ngram_range=(1, 2), max_features=8000,
+                                         token_pattern=r"(?u)\b[a-zA-Z][a-zA-Z0-9_-]+\b")
             counts = vectorizer.fit_transform(texts)
             aggregate = np.vstack([np.asarray(counts[positions].sum(axis=0)).ravel() for positions in ordered])
             frequency = aggregate.sum(axis=0)
@@ -109,6 +115,7 @@ def discover(items, index, *, min_cluster_size=15, min_samples=5):
             "noise_ids": [item_id for item_id, category in assignments.items() if category is None],
             "parameters": {"algorithm": "PCA-normalize-HDBSCAN", "components": dimensions,
                            "min_cluster_size": min_cluster_size, "min_samples": min_samples,
+                           "label_method": "title-first-ctfidf-v1",
                            "cluster_selection_method": "leaf", "sklearn_version": importlib.metadata.version("scikit-learn")}}
 
 
@@ -122,6 +129,9 @@ def match_categories(index, discovery, query, encoder, limit=3):
                for category in discovery["categories"]]
     matches.sort(key=lambda match: (-match["similarity"], match["id"]))
     return {"matches": matches[:limit], "status": "candidate_matches_only",
+            "coverage": {"indexed_tickets": len(index["ids"]),
+                         "assigned_tickets": len(index["ids"]) - len(discovery["noise_ids"]),
+                         "unassigned_tickets": len(discovery["noise_ids"])},
             "interpretation": "Cosine similarity is not a calibrated probability or confirmed classification."}
 
 

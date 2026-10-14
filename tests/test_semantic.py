@@ -131,6 +131,20 @@ class SemanticTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 normalize(values)
 
+    def test_category_names_prefer_work_titles_over_stacktraces_and_numeric_logs(self):
+        items = {}
+        for number in range(20):
+            item = ticket(number, ("Schema migration" if number < 10 else "Login identity") + f" variant {number}")
+            item["fields"]["description"] = "java org stacktrace 1000 500 " * 100
+            items[item["id"]] = item
+        result = discover(items, embed_items(items, self.encoder, self.cache), min_cluster_size=8, min_samples=2)
+        self.assertEqual(len(result["categories"]), 2)
+        labels = " ".join(category["keyword_label"] for category in result["categories"])
+        self.assertIn("schema", labels)
+        self.assertIn("identity", labels)
+        self.assertNotIn("stacktrace", labels)
+        self.assertNotIn("1000", labels)
+
     def test_historical_category_corpus_excludes_later_text_and_new_tickets(self):
         database = self.root / "source.sqlite"
         records = [{"table": "Project", "row": {"ID": 1, "Project_Key": "TEST"}}]
