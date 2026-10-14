@@ -1,0 +1,9 @@
+{"table":"Project","row":{"ID":1,"Project_Key":"DEMO","Name":"Synthetic ETL test project","URL":"https://example.invalid/projects/DEMO"}}
+{"table":"Issue","row":{"ID":10,"Project_ID":1,"Issue_Key":"DEMO-1","Type":"Story","Title":"Synthetic migration","Description":"Test fixture only; not real Jira data.","Status":"Closed","Resolution":"Fixed","Story_Point":5,"Creation_Date":"2021-01-01 09:00:00","Resolution_Date":"2021-01-15 10:00:00","Last_Updated":"2021-01-15 10:00:00"}}
+{"table":"Issue","row":{"ID":11,"Project_ID":1,"Issue_Key":"DEMO-2","Type":"Task","Title":"Synthetic schema preparation","Description":null,"Status":"In Progress","Story_Point":0,"Creation_Date":"2021-01-01 09:00:00","Last_Updated":"2021-01-10 10:00:00"}}
+{"table":"Change_Log","row":{"ID":100,"Issue_ID":10,"Field":"Story Points","Change_Type":"STORY_POINT","Creation_Date":"2021-01-05 11:00:00","From_Value":"3","To_Value":"5","From_String":"3","To_String":"5"}}
+{"table":"Change_Log","row":{"ID":101,"Issue_ID":10,"Field":"status","Change_Type":"STATUS","Creation_Date":"2021-01-06 09:00:00","From_Value":"1","To_Value":"3","From_String":"Open","To_String":"In Progress"}}
+{"table":"Issue_Link","row":{"ID":200,"Issue_ID":10,"Target_Issue_ID":11,"Name":"Blocks","Description":"is blocked by","Direction":"INBOUND"}}
+{"table":"Comment","row":{"ID":300,"Issue_ID":10,"Comment":"Synthetic comment preserved as raw input.","Creation_Date":"2021-01-05 12:00:00"}}
+{"table":"Component","row":{"ID":400,"Project_ID":1,"Name":"Database"}}
+{"table":"Issue_Component","row":{"Issue_ID":10,"Component_ID":400}}

@@ -1,0 +1,1 @@
+"""Optional LangGraph investigation workflow."""
