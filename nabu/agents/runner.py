@@ -11,7 +11,8 @@ from .models import OfflineSmokeModel, make_model
 
 def run_review(database, epic, cutoff, run_dir: Path, *, offline=None, model_id=None,
                resume=False, pause_after_prepare=False, model=None,
-               max_model_calls=10, max_tool_calls=20, max_rounds=2):
+               max_model_calls=10, max_tool_calls=20, max_rounds=2,
+               retrieval=None, embedding_model_dir=None, embedding_cache=None, encoder=None):
     run_dir = run_dir.resolve()
     checkpoint = run_dir / "checkpoints.sqlite"
     config = {"configurable": {"thread_id": "review"}, "recursion_limit": 500}
@@ -25,6 +26,13 @@ def run_review(database, epic, cutoff, run_dir: Path, *, offline=None, model_id=
         request = {"version": VERSION, "database": str((database or Path("data/nabu.sqlite")).resolve()),
                    "epic": epic, "as_of": timestamp(cutoff, mandatory=True), "mode": mode, "model": model_id,
                    "max_model_calls": max_model_calls, "max_tool_calls": max_tool_calls, "max_rounds": max_rounds}
+        request.update({"retrieval": retrieval or "lexical",
+                        "embedding_model_dir": str((embedding_model_dir or Path("data/models/bge-small-en-v1.5")).resolve()),
+                        "embedding_cache": str((embedding_cache or Path("data/semantic/embeddings.sqlite")).resolve())})
+        if request["retrieval"] not in {"lexical", "semantic"}:
+            raise ValueError("Retrieval must be lexical or semantic")
+        if request["embedding_cache"] in {request["database"], str(checkpoint)}:
+            raise ValueError("Embedding cache must differ from source and checkpoint databases")
         runtime_model = model or make_model(mode, model_id)
         if Path(request["database"]) == checkpoint:
             raise ValueError("Checkpoint and source database must differ")
@@ -48,8 +56,12 @@ def run_review(database, epic, cutoff, run_dir: Path, *, offline=None, model_id=
                 raise ValueError("Cannot change the source database locator of a saved review")
             if model_id and model_id != request["model"] or offline is not None and ("offline" if offline else "anthropic") != request["mode"]:
                 raise ValueError("Cannot change the model/mode of a saved review")
+            if retrieval and retrieval != request["retrieval"] or embedding_model_dir and str(embedding_model_dir.resolve()) != request["embedding_model_dir"]:
+                raise ValueError("Cannot change retrieval or embedding model of a saved review")
+            if embedding_cache and str(embedding_cache.resolve()) != request["embedding_cache"]:
+                raise ValueError("Cannot change embedding cache of a saved review")
             runtime_model = model or (make_model(request["mode"], request["model"]) if snapshot.next else OfflineSmokeModel())
-        graph = build_graph(runtime_model, saver, pause_after_prepare=pause_after_prepare)
+        graph = build_graph(runtime_model, saver, pause_after_prepare=pause_after_prepare, encoder=encoder)
         if resume and not snapshot.next:
             state = snapshot.values
         else:

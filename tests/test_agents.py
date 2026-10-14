@@ -108,6 +108,44 @@ class AgentTests(unittest.TestCase):
         self.assertEqual(model.critic_calls, 1)
         self.assertEqual(report["usage"], {"model_calls": 3, "tool_calls": 2, "rounds": 1})
 
+    def test_semantic_retrieval_preserves_citation_and_historical_boundaries(self):
+        from test_semantic import FakeEncoder
+        model = ScriptedModel(self.steps(self.finding()), [[{"finding_id": "gap-1", "action": "accept", "reason": "Supported by comparable prior work."}]])
+        report = self.run_model(model, retrieval="semantic", encoder=FakeEncoder(), embedding_cache=self.root / "vectors.sqlite")
+        self.assertEqual(len(report["findings"]), 1)
+        self.assertEqual(report["retrieval"]["method"], "semantic_cosine")
+        self.assertEqual(report["retrieval"]["proposed_categories"], 0)
+        self.assertNotIn("FUTURE_SECRET", json.dumps(report))
+
+    def test_semantic_resume_reuses_vectors_and_frozen_source(self):
+        from test_semantic import FakeEncoder
+        encoder = FakeEncoder()
+        paused = self.run_model(ScriptedModel([]), retrieval="semantic", encoder=encoder,
+                                embedding_cache=self.root / "vectors.sqlite", pause_after_prepare=True)
+        self.assertGreater(encoder.encoded_documents, 0)
+        connection = sqlite3.connect(self.database)
+        connection.execute("UPDATE work_item SET title='CHANGED_SOURCE',description='CHANGED_SOURCE'")
+        connection.commit()
+        connection.close()
+        resumed_encoder = FakeEncoder()
+        model = ScriptedModel(self.steps(self.finding()), [[{"finding_id": "gap-1", "action": "accept", "reason": "Supported by frozen evidence."}]])
+        report = run_review(None, None, None, self.root / "run", resume=True, model=model, encoder=resumed_encoder)
+        self.assertEqual(report["evidence_fingerprint"], paused["evidence_fingerprint"])
+        self.assertEqual(resumed_encoder.encoded_documents, 0)
+        self.assertEqual(len(report["findings"]), 1)
+        with self.assertRaisesRegex(ValueError, "retrieval or embedding model"):
+            run_review(None, None, None, self.root / "run", resume=True, retrieval="lexical")
+
+    def test_semantic_review_without_prior_text_can_finish_without_a_model_download(self):
+        connection = sqlite3.connect(self.database)
+        connection.execute("UPDATE work_item SET created_at='2099-01-01T00:00:00.000000Z' WHERE source_key IN ('TEST-3','TEST-4')")
+        connection.commit()
+        connection.close()
+        report = self.run_model(ScriptedModel([("submit_findings", {"findings": [], "limitations": ["No eligible prior text."]})]),
+                                retrieval="semantic", embedding_model_dir=self.root / "absent-model")
+        self.assertEqual(report["status"], "completed")
+        self.assertEqual(report["retrieval"]["method"], "semantic_unavailable")
+
     def test_invented_citation_is_withheld_and_revised(self):
         steps = self.steps(self.finding(bad_id=True)) + [("submit_findings", {"findings": [], "limitations": ["No supported finding."]})]
         model = ScriptedModel(steps)

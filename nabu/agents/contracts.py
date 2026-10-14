@@ -66,7 +66,7 @@ class PatternArgs(StrictModel):
 
 TOOLS = {
     "get_plan": (EmptyArgs, "Read the frozen historical plan and its unknown fields."),
-    "search_prior_work": (SearchArgs, "Search cutoff-bound earlier ticket text for supporting examples OR counterexamples. Lexical search, not proof of comparability. completed_only means historically observed done status, not successful delivery."),
+    "search_prior_work": (SearchArgs, "Search cutoff-bound earlier ticket text for supporting examples OR counterexamples. Uses the run's fixed lexical or semantic retrieval. Similarity/categories are not proof of comparability. completed_only means historically observed done status, not successful delivery."),
     "get_item": (ItemArgs, "Inspect a prior ticket at this review's fixed cutoff. No later fields are available."),
     "inspect_scope": (ItemArgs, "Inspect observed membership of an earlier epic at the fixed cutoff; incomplete scope stays explicit."),
     "measure_pattern": (PatternArgs, "Count literal phrase matches in previously inspected ticket text. Reports missing text; counts are descriptive, not probabilities or causal proof."),

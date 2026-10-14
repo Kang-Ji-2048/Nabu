@@ -1,33 +1,9 @@
 import hashlib
 import json
 from pathlib import Path
-import re
 
 from ..replay import HistoricalReader
-
-
-STOPWORDS = set("a an the and or to of in on for with by is are be as it this that should can from into at".split())
-
-
-def tokens(text):
-    return set(re.findall(r"[a-z0-9]+", text.casefold())) - STOPWORDS
-
-
-def text_of(item):
-    return "\n".join(str(item["fields"][name]) for name in ("title", "description")
-                     if name not in item["unknown_fields"] and item["fields"][name] is not None)
-
-
-def bounded_item(item):
-    item = {**item, "fields": dict(item["fields"])}
-    truncated = []
-    for name, limit in (("title", 500), ("description", 4000)):
-        value = item["fields"][name]
-        if isinstance(value, str) and len(value) > limit:
-            item["fields"][name] = value[:limit]
-            truncated.append(name)
-    item["truncated_fields"] = truncated
-    return item
+from ..text import bounded_item, text_of, tokens
 
 
 def freeze_evidence(database: Path, epic: str, cutoff: str):
@@ -42,7 +18,7 @@ def freeze_evidence(database: Path, epic: str, cutoff: str):
                 continue
             historical, _ = reader.item_at(item_id)
             # Unknown text cannot be used to rank or justify a candidate.
-            if text_of(historical):
+            if text_of(historical).strip():
                 corpus[item_id] = bounded_item(historical)
         for item_id in corpus:
             if any(event["field"].casefold() == "epic child" and event["at"] <= reader.cutoff for event in reader.events[item_id]):
@@ -55,13 +31,26 @@ def freeze_evidence(database: Path, epic: str, cutoff: str):
         reader.close()
 
 
-def execute_tool(name, args, state):
+def execute_tool(name, args, state, encoder=None):
     """Pure reads of a frozen historical corpus; no model-controlled SQL/cutoff."""
     corpus = state["corpus"]
     evidence = dict(state.get("evidence", {}))
     if name == "get_plan":
         return state["plan"], evidence
     if name == "search_prior_work":
+        if state.get("semantic_index") is not None:
+            from ..semantic.vectors import semantic_search
+            if encoder is None:
+                raise ValueError("The pinned local embedding model is required for semantic retrieval")
+            ranked = semantic_search(state["semantic_index"], corpus, args.query, encoder,
+                                     limit=args.limit, completed_only=args.completed_only)
+            results = [entry["item"] for entry in ranked]
+            evidence.update({item["id"]: item for item in results})
+            assignments = state["category_inventory"]["assignments"]
+            return {"items": results, "method": "semantic_cosine", "coverage": "recoverable_text_only",
+                    "matches": [{"item_id": entry["item"]["id"], "similarity": entry["similarity"],
+                                 "category_id": assignments.get(entry["item"]["id"])} for entry in ranked],
+                    "interpretation": "Similarity and proposed categories do not establish delivery risk."}, evidence
         query = tokens(args.query)
         scored = []
         for item in corpus.values():

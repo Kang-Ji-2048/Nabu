@@ -9,6 +9,11 @@ Nabu reads a team's ticket history from any tracker and warns them, before work 
 
 Built for the Accel AI Innovate London hackathon (15 Oct 2026), challenge "Long Running Agents: From Task to Workflow".
 
+The current build implements TAWOS ingestion, conservative historical replay,
+local work-category discovery, semantic retrieval and a LangGraph gap investigator
+with citation validation and a critic. The broader agent team and P50/P90
+forecasting above describe the intended product roadmap.
+
 See [plan.md](plan.md) for the full build plan.
 
 ## ETL pipeline
@@ -28,3 +33,7 @@ The replay reader reconstructs an evidence-backed partial plan at a fixed cutoff
 ## Agent workflow
 
 LangGraph now runs a tool-driven gap investigator, citation validator and critic, with SQLite checkpoints for recovery. See [docs/agents.md](docs/agents.md) for installation, an offline smoke test, live Anthropic configuration and resumable execution.
+
+## Work categories and semantic retrieval
+
+Local ticket embeddings and HDBSCAN discover proposed work categories without a fixed category count. The investigator can use semantic retrieval against its frozen historical evidence. See [docs/categories.md](docs/categories.md) for model preparation, discovery, search and refresh commands.

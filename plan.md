@@ -12,20 +12,30 @@ Teams repeat the same delivery mistakes because the lessons are buried in old ti
 
 ## Architecture
 
-Two halves share one store. Adapters normalise every tracker into the canonical schema and the historian learns patterns from it offline. Each new plan then goes through the agent team, which reads only the canonical store, never a platform directly.
+Adapters normalize tracker data into one canonical store. Local text embeddings
+and HDBSCAN discover work categories, which guide retrieval for a LangGraph
+investigator. Categories can change on batch refresh without a fixed taxonomy.
+They describe similar work; delivery-risk claims require separate cited evidence.
 
 ```
 Jira / Linear / GitHub Issues / Azure DevOps
         -> Adapters (one mapping per source)
         -> Canonical store (work_item, link, event + embeddings)
-        -> Historian (clusters history into cited failure patterns)
+        -> Local embeddings -> versioned work categories + semantic retrieval
 
-New epic or plan -> Planner -> [Estimator | Dependency hunter | Gap finder]
-                 -> Critic (2+ cited tickets; weak warnings go back once)
-                 -> Writer -> Risk review
+New epic or plan -> Freeze eligible evidence -> discover categories in that corpus
+                 -> Gap investigator <-> historical evidence tools
+                 -> Python citation validation -> Critic -> Risk review
+                                                   | revise once |
 ```
 
 Adding a platform means writing one adapter and one mapping file; nothing downstream of the store changes.
+
+The implemented slice uses local SQLite, a pinned CPU embedding model and direct
+Anthropic calls for live investigations. Jev is not required. A historical review
+never reuses categories trained on a later snapshot: its categories and vectors
+are frozen at the review cutoff. The broader specialist team and P50/P90
+forecasting below remain roadmap items, not current capabilities.
 
 ## Canonical schema
 

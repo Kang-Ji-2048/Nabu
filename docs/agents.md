@@ -76,7 +76,7 @@ execution; distributed workers and a background scheduler are not included.
 ## Tools and evidence boundary
 
 - `get_plan`: inspect the frozen historical plan and its unknown fields.
-- `search_prior_work`: rank eligible prior tickets using lexical token overlap.
+- `search_prior_work`: rank eligible prior tickets using the run's lexical or semantic retrieval method.
 - `get_item`: inspect a specific eligible prior ticket at the fixed cutoff.
 - `inspect_scope`: inspect observed historical membership where recorded.
 - `measure_pattern`: count literal phrase occurrences among inspected examples,
@@ -127,8 +127,15 @@ two observed prior scopes. The local offline checkpoint/restart demonstration
 is in `data/reviews/xd-238-offline-verified/`. No live API key was configured during
 implementation, so **live warning quality has not yet been evaluated**.
 
-Search is lexical rather than semantic; measurements describe selected examples
-and are not risk probabilities. Specialist prompts, retrieval quality and critic
+Lexical retrieval remains the default. Add `--retrieval semantic` after installing
+and preparing the local model described in [categories.md](categories.md).
+Semantic runs discover proposed work categories only from the frozen historical
+corpus; they never load a current snapshot inventory. Vectors and categories are
+checkpointed with that corpus. Workflow version `nabu-review-v2` requires a fresh
+run directory for checkpoints created by the earlier version.
+
+Measurements describe selected examples and are not risk probabilities.
+Specialist prompts, retrieval quality and critic
 decisions require evaluation against held-out historical outcomes before claiming
 prediction accuracy. The immediate next step is a live run, then inspection of
 its evidence and a comparison with the single-prompt baseline.

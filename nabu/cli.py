@@ -40,6 +40,24 @@ def main(argv=None):
     review.add_argument("--max-model-calls", type=int, default=10)
     review.add_argument("--max-tool-calls", type=int, default=20)
     review.add_argument("--max-rounds", type=int, default=2)
+    review.add_argument("--retrieval", choices=("lexical", "semantic"))
+    review.add_argument("--embedding-model-dir", type=Path)
+    review.add_argument("--embedding-cache", type=Path)
+    prepare = commands.add_parser("prepare-model", help="Download and verify the pinned local embedding model")
+    prepare.add_argument("--model-dir", type=Path, default=Path("data/models/bge-small-en-v1.5"))
+    categories = commands.add_parser("discover-categories", help="Discover work categories from local ticket embeddings")
+    categories.add_argument("--database", type=Path, default=Path("data/nabu.sqlite"))
+    categories.add_argument("--project", required=True)
+    categories.add_argument("--as-of")
+    categories.add_argument("--output", type=Path, required=True)
+    categories.add_argument("--model-dir", type=Path, default=Path("data/models/bge-small-en-v1.5"))
+    categories.add_argument("--cache", type=Path, default=Path("data/semantic/embeddings.sqlite"))
+    categories.add_argument("--min-cluster-size", type=int, default=15)
+    categories.add_argument("--min-samples", type=int, default=5)
+    search = commands.add_parser("search-categories", help="Match text to discovered categories and similar tickets")
+    search.add_argument("--index-dir", type=Path, required=True)
+    search.add_argument("--query", required=True)
+    search.add_argument("--limit", type=int, default=5)
     ingest = commands.add_parser("load", help="Normalize a TAWOS JSONL export into SQLite")
     ingest.add_argument("--input", type=Path, required=True)
     ingest.add_argument("--database", type=Path, default=Path("data/nabu.sqlite"))
@@ -70,11 +88,25 @@ def main(argv=None):
                                     offline=args.offline, model_id=args.model, resume=args.resume,
                                     pause_after_prepare=args.pause_after_prepare,
                                     max_model_calls=args.max_model_calls, max_tool_calls=args.max_tool_calls,
-                                    max_rounds=args.max_rounds)
+                                    max_rounds=args.max_rounds, retrieval=args.retrieval,
+                                    embedding_model_dir=args.embedding_model_dir, embedding_cache=args.embedding_cache)
+            except ImportError as exc:
+                raise ValueError('Install semantic dependencies: pip install -e ".[agents,semantic]"') from exc
             except (ValueError, OSError, sqlite3.Error):
                 raise
             except Exception as exc:
                 raise ValueError(f"Review failed ({type(exc).__name__}); saved state is in {args.run_dir}. Use --resume to continue.") from exc
+        elif args.command == "prepare-model":
+            from .semantic.encoder import prepare_model
+            result = prepare_model(args.model_dir)
+        elif args.command == "discover-categories":
+            from .semantic.categories import write_discovery
+            result = write_discovery(args.database, args.project, args.output, cutoff=args.as_of,
+                                     model_dir=args.model_dir, cache=args.cache,
+                                     min_cluster_size=args.min_cluster_size, min_samples=args.min_samples)
+        elif args.command == "search-categories":
+            from .semantic.categories import search_inventory
+            result = search_inventory(args.index_dir, args.query, limit=args.limit)
         else:
             if args.report and args.report.resolve() in {args.input.resolve(), args.database.resolve()}:
                 raise ValueError("Report path must differ from input and database")
@@ -83,6 +115,9 @@ def main(argv=None):
                 args.report.parent.mkdir(parents=True, exist_ok=True)
                 args.report.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(result, indent=2))
+    except ImportError as exc:
+        print('Nabu failed: install semantic dependencies with pip install -e ".[semantic]"', file=sys.stderr)
+        raise SystemExit(1) from exc
     except (ValueError, OSError, sqlite3.Error) as exc:
         print(f"Nabu failed: {exc}", file=sys.stderr)
         raise SystemExit(1) from exc
