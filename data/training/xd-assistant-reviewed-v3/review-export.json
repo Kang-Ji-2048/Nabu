@@ -1,0 +1,53 @@
+{
+  "counts": {
+    "train": 58,
+    "validation": 2
+  },
+  "pending_review": [],
+  "decision_sha256": "fc0a154ce90628936f84f8b21842b6e28b3f42a9c27727dd710374a1abc5ed4d",
+  "candidate_sha256": "c44596007436eab75b80b0f9a78a207e0caec86ca034e9b79c6dd1997c6a79c8",
+  "preparation_manifest_sha256": "19cf968f2d872503d81fb71f887acfb190651f50bed7c8e59d6c0b83ab677f75",
+  "dataset_version": "xd-development-v2",
+  "training_started": false,
+  "label_review": "assistant_reviewed",
+  "reviewer_kinds": [
+    "assistant"
+  ],
+  "label_review_complete": true,
+  "human_approved": false,
+  "experimental": true,
+  "files": {
+    "train.jsonl": "63a60b3b35212acfc1d0c7a6c617196591ee0b6f9b261d6af3ab7c2aa776f4ab",
+    "validation.jsonl": "02cd5f6d60a8aba3075575af22f8da8e5ddb0f0ee0caf2bae075e0a6348fb8e4",
+    "preparation-manifest.json": "19cf968f2d872503d81fb71f887acfb190651f50bed7c8e59d6c0b83ab677f75",
+    "grouping-proof.json": "b453e1b41247b2ff812deb09782d140668e1fa2b949757fe14b259e9358ad5a4",
+    "split-report.json": "f4f9b70cc9d98e364316729ddba601fe8329a14ee9f93db322c81a38af3e7ef3",
+    "token-profile.json": "cb2dfa712d6e2cc8a2a8bd4016d1feb05d4f0a3bbb121996edcceb0685fbcf1a"
+  },
+  "evaluation_coverage": {
+    "positive_findings_by_type": {
+      "train": {
+        "dependency_gap": 1,
+        "scope_gap": 0,
+        "validation_gap": 2
+      },
+      "validation": {
+        "dependency_gap": 0,
+        "scope_gap": 0,
+        "validation_gap": 0
+      }
+    },
+    "validation_positive_examples": 0,
+    "risk_recall_estimable": false,
+    "missing_positive_training_types": [
+      "scope_gap"
+    ],
+    "production_quality_verified": false,
+    "warnings": [
+      "Validation has no positive reference risks; recall is undefined.",
+      "No positive training examples for: scope_gap"
+    ]
+  },
+  "candidate_questions_adjudicated": 19,
+  "pending_questions": 0
+}

@@ -10,6 +10,15 @@ spec.loader.exec_module(training)
 
 
 class TrainingGateTests(unittest.TestCase):
+    def test_base_revision_and_conversion_must_match(self):
+        provenance = {'checkpoint': 'Qwen/Qwen3-8B', 'bits': 4, 'revision': 'pinned'}
+        training.validate_base(provenance, 'Qwen/Qwen3-8B', 'pinned')
+        for changed in ({**provenance, 'checkpoint': 'other'}, {**provenance, 'bits': 8},
+                        {**provenance, 'revision': 'newer'}, {**provenance, 'revision': None}):
+            with self.subTest(changed=changed):
+                with self.assertRaises(ValueError):
+                    training.validate_base(changed, 'Qwen/Qwen3-8B', 'pinned')
+
     def test_generated_labels_cannot_pass_human_review_gate(self):
         row = {'id': 'example', 'split': 'train', 'review_status': 'generated_unreviewed',
                'label_source': {'kind': 'local_model'}, 'target': {'risks': [], 'limitations': []},
@@ -17,12 +26,12 @@ class TrainingGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'train.jsonl'
             path.write_text(json.dumps(row))
-            with self.assertRaisesRegex(ValueError, 'human reviews'):
+            with self.assertRaisesRegex(ValueError, 'named reviewer'):
                 training.read_partition(path, 'train')
             accepted = training.read_partition(path, 'train', allow_generated=True)
             self.assertEqual(accepted[0]['review_status'], 'generated_unreviewed')
             self.assertNotIn('reviewer', accepted[0])
-            with self.assertRaisesRegex(ValueError, 'human reviews'):
+            with self.assertRaisesRegex(ValueError, 'correct split'):
                 training.read_partition(path, 'validation', allow_generated=True)
 
     def test_approved_labels_require_named_reviewer(self):
@@ -30,7 +39,7 @@ class TrainingGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'train.jsonl'
             path.write_text(json.dumps(row))
-            with self.assertRaisesRegex(ValueError, 'human reviews'):
+            with self.assertRaisesRegex(ValueError, 'named reviewer'):
                 training.read_partition(path, 'train')
 
 
@@ -63,7 +72,7 @@ class PreparationAuditGateTests(unittest.TestCase):
             path.write_text(json.dumps(row))
             inspected = training.read_partition(path, 'train', inspect_only=True)
             self.assertEqual(inspected[0]['review_status'], 'generated_unreviewed')
-            with self.assertRaisesRegex(ValueError, 'human reviews'):
+            with self.assertRaisesRegex(ValueError, 'named reviewer'):
                 training.read_partition(path, 'train')
             path.write_text(json.dumps(row)+'\n'+json.dumps(row))
             with self.assertRaisesRegex(ValueError, 'Duplicate'):

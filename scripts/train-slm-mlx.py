@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from nabu.slm import CHECKPOINT, SUPPORTED_CHECKPOINTS, messages
 from nabu.risk.runner import validate_detection
 from nabu.pipeline import timestamp
+from nabu.label_review import review_kind, review_summary, evaluation_coverage
 
 
 def read_partition(path, split, allow_generated=False, inspect_only=False):
@@ -24,10 +25,11 @@ def read_partition(path, split, allow_generated=False, inspect_only=False):
         if row['id'] in seen:
             raise ValueError('Duplicate example IDs in a training partition')
         seen.add(row['id'])
-        reviewed = row.get("review_status") == "approved" and isinstance(row.get("reviewer"), str) and row["reviewer"].strip()
         generated = (allow_generated or inspect_only) and row.get("review_status") == "generated_unreviewed" and row.get("label_source", {}).get("kind") in {"local_model", "assistant_generated", "evidence_rule"}
-        if row.get("split") != split or not (reviewed or generated):
-            raise ValueError("Training requires approved, named human reviews in the correct split")
+        if row.get('split') != split:
+            raise ValueError('Training requires reviewed labels in the correct split')
+        if not generated:
+            review_kind(row)
         checked = validate_detection(row["target"], row["input"])
         if checked["rejected"]:
             raise ValueError(f"Invalid training citations: {row['id']}")
@@ -47,12 +49,28 @@ def validate_preparation(path, rows):
         digest = hashlib.sha256(json.dumps(row['input'], sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest()
         if inputs.get(row['id']) != digest:
             raise ValueError(f"Dataset input is absent from or differs from preparation audit: {row['id']}")
+        if 'train_before' in manifest and 'eval_before' in manifest:
+            cutoff = timestamp(row['as_of'], mandatory=True)
+            if cutoff != timestamp(row['input']['plan']['as_of'], mandatory=True):
+                raise ValueError('Row cutoff differs from its frozen plan')
+            expected = ('train' if cutoff < timestamp(manifest['train_before'], mandatory=True)
+                        else 'validation' if cutoff < timestamp(manifest['eval_before'], mandatory=True) else 'test')
+            if row['split'] != expected or expected == 'test':
+                raise ValueError('Row split differs from audited time boundaries')
     return manifest
+
+
+def validate_base(provenance, checkpoint, revision=None):
+    if provenance.get('checkpoint') != checkpoint or provenance.get('bits') != 4:
+        raise ValueError('Wrong base checkpoint or conversion bit width')
+    if not provenance.get('revision') or (revision and provenance['revision'] != revision):
+        raise ValueError('Base revision differs from the pinned training source')
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", choices=SUPPORTED_CHECKPOINTS, default=CHECKPOINT)
+    parser.add_argument("--base-revision", help="Require the exact source revision recorded at preparation")
     parser.add_argument("--dataset", type=Path, required=True)
     parser.add_argument("--model-dir", type=Path, required=True, help="4-bit MLX conversion of the exact Qwen checkpoint")
     parser.add_argument("--output", type=Path, required=True)
@@ -102,9 +120,10 @@ def main():
         raise ValueError("Model must be an MLX 4-bit conversion")
     # Require conversion provenance, not just a directory name.
     provenance = json.loads((args.model_dir / "nabu-base.json").read_text())
-    if provenance["checkpoint"] != args.checkpoint:
-        raise ValueError("Wrong base checkpoint")
-    reviewed = all(row.get('review_status') == 'approved' for row in train + valid)
+    validate_base(provenance, args.checkpoint, args.base_revision)
+    reviews = review_summary(train + valid)
+    coverage = evaluation_coverage(train, valid)
+    reviewed = reviews['label_review_complete']
     iterations = math.ceil(len(train) * args.epochs)
     # MLX updates only on complete accumulation groups. Use a divisor of the
     # actual iteration count instead of repeating examples or losing the tail.
@@ -114,6 +133,7 @@ def main():
                       "ready_for_training": reviewed and preparation is not None,
                       "iterations": iterations, "gradient_accumulation": accumulation,
                       "requested_gradient_accumulation": args.gradient_accumulation,
+                      **reviews, 'evaluation_coverage': coverage,
                       "validation_positive_examples": sum(bool(row['target']['risks']) for row in valid)}))
     if args.preflight_only:
         return
@@ -134,8 +154,8 @@ def main():
     import yaml
     config_path = args.output / "training.yaml"
     config_path.write_text(yaml.safe_dump(config))
-    record = {"status": "started", "experimental": args.allow_generated_labels,
-              "label_review": "unreviewed_machine_labels" if args.allow_generated_labels else "human_reviewed", "base_checkpoint": args.checkpoint, "base_provenance": provenance,
+    record = {"status": "started", **reviews, 'evaluation_coverage': coverage,
+              "base_checkpoint": args.checkpoint, "base_provenance": provenance,
               "trained_through": max(row["as_of"] for row in train + valid),
               "gradient_training_through": max(row["as_of"] for row in train),
               "training_data_sha256": hashlib.sha256((args.dataset / "train.jsonl").read_bytes()).hexdigest(),
@@ -154,7 +174,7 @@ def main():
         record["status"] = "failed"
         record_path.write_text(json.dumps(record, indent=2))
         raise
-    record["status"] = "experimental_adapter_trained" if args.allow_generated_labels else "adapter_trained"
+    record["status"] = "experimental_adapter_trained" if record['experimental'] else "adapter_trained"
     record_path.write_text(json.dumps(record, indent=2))
     print(f"Adapter trained in {args.output}. Export and held-out evaluation are still required; no production manifest was issued.")
 

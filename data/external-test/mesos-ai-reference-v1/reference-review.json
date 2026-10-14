@@ -1,0 +1,28 @@
+{
+  "version": "nabu-external-ai-reference-v1",
+  "purpose": "external_reference_only_never_training",
+  "sample_cases": 32,
+  "positive_reference_cases": 3,
+  "reference_risk_types": [
+    "validation_gap"
+  ],
+  "label_review_complete": true,
+  "human_approved": false,
+  "independent_ground_truth": false,
+  "experimental": true,
+  "training_started": false,
+  "model_evaluation_started": false,
+  "files": {
+    "case-drafts.jsonl": "86acb01ad271b03f5a247354fa67312e459f60646d88c0b35074aa8cf28836e8",
+    "preparation.json": "6c7f802b0157c12b3d65521a4cc908b6d5aff0e6dc055114d1bc425cb900afcc",
+    "reference-labels.jsonl": "09181756e26eae764e6fa8c0b1fdb1cc15f316c75927cac76236be177d4046f0",
+    "semantic-audit.jsonl": "50aea0929c8ea049b2863cc338d207ab961b60839b361905c90ded6584dbab0d",
+    "token-profile.json": "c2546fef7d2be80b4ee84e5be38c0ba7f85470e078f635ce699d09166771cc1c"
+  },
+  "limitations": [
+    "AI references are conditional suggestions, not observed eventual failures or independent human gold labels.",
+    "Only three positive reference cases; no scope_gap or dependency_gap positives in this external sample.",
+    "Source mapping warnings remain explicit: Accepted/Reviewable, Documentation/Wish and noncanonical links were not guessed.",
+    "External references must never be added to training or used for prompt/threshold selection."
+  ]
+}

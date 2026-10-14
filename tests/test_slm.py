@@ -13,6 +13,24 @@ def frozen():
 
 
 class SlmTests(unittest.TestCase):
+    def test_external_baseline_keeps_identity_and_mixed_train_fails_before_inference(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root/'external.jsonl'
+            case = {'id': 'external', 'split': 'external_test',
+                    'input': {'plan': frozen()['plan'], 'prior_work': [], 'allowed_risk_types': ['scope_gap']}}
+            path.write_text(json.dumps(case))
+            report = evaluate_baseline(path, root/'baseline.json', model='base-8b', checkpoint='Qwen/Qwen3-8B',
+                                       completion=lambda *args: {'risks': [], 'limitations': []})
+            self.assertEqual(report['expected_base_checkpoint'], 'Qwen/Qwen3-8B')
+            self.assertFalse(report['trained'])
+            path.write_text(json.dumps(case)+'\n'+json.dumps({**case, 'id': 'train', 'split': 'train'}))
+            with patch('nabu.slm.ollama_completion') as inference:
+                with self.assertRaisesRegex(ValueError, 'only validation/test/external_test'):
+                    evaluate_baseline(path, root/'bad.json', model='base-8b')
+                inference.assert_not_called()
+            self.assertFalse((root/'bad.json').exists())
+
     def test_review_gate_and_empty_targets(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

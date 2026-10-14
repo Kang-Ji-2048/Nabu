@@ -87,7 +87,7 @@ def ollama_completion(endpoint, model, prompt, max_input_bytes, max_tokens):
     return json.loads(choice["message"]["content"])
 
 
-def evaluate_baseline(dataset, output, *, model, endpoint="http://127.0.0.1:11434/v1", max_input_bytes=24000, max_tokens=4096, completion=None):
+def evaluate_baseline(dataset, output, *, model, checkpoint=CHECKPOINT, endpoint="http://127.0.0.1:11434/v1", max_input_bytes=24000, max_tokens=4096, completion=None):
     if max_input_bytes < 1 or max_tokens < 1:
         raise ValueError("Budgets must be positive")
     if output.exists() or output.resolve() == dataset.resolve():
@@ -95,10 +95,12 @@ def evaluate_baseline(dataset, output, *, model, endpoint="http://127.0.0.1:1143
     rows = [json.loads(line) for line in dataset.read_text().splitlines() if line.strip()]
     if not rows:
         raise ValueError("Evaluation dataset is empty")
+    if checkpoint not in SUPPORTED_CHECKPOINTS:
+        raise ValueError('Unsupported baseline checkpoint')
+    if any(row['split'] not in {'validation', 'test', 'external_test'} for row in rows):
+        raise ValueError('Baseline evaluation accepts only validation/test/external_test cases')
     results = []
     for row in rows:
-        if row["split"] not in {"validation", "test"}:
-            raise ValueError("Baseline evaluation accepts only validation/test cases")
         payload = row["input"]
         entry = {"id": row["id"], "human_assessment": {"useful_findings": None, "false_alarms": None}}
         try:
@@ -111,7 +113,7 @@ def evaluate_baseline(dataset, output, *, model, endpoint="http://127.0.0.1:1143
             entry.update(schema_valid=False, error=str(exc))
         results.append(entry)
     proposed = sum(row.get("proposed_findings", 0) for row in results)
-    report = {"mode": "untrained_baseline", "trained": False, "expected_base_checkpoint": CHECKPOINT,
+    report = {"mode": "untrained_baseline", "trained": False, "expected_base_checkpoint": checkpoint,
               "model": model, "checkpoint_identity_verified": False, "endpoint": endpoint,
               "metrics": {"cases": len(results), "schema_valid_cases": sum(row["schema_valid"] for row in results),
                           "citation_valid_finding_fraction": sum(row.get("valid_findings", 0) for row in results) / proposed if proposed else None,

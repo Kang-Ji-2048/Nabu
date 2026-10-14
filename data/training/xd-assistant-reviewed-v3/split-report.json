@@ -1,0 +1,412 @@
+{
+  "policy": "chronological_80_percent_development_20_percent_test",
+  "unit": "ticket timeline boundaries applied to historical epic plans",
+  "development_only": true,
+  "total_tickets": 3707,
+  "development_tickets": 2965,
+  "test_tickets": 742,
+  "review_cutoff": "one day after epic creation",
+  "total_epics": 109,
+  "development_before_exclusions": 89,
+  "test_before_exclusions": 20,
+  "validation_within_development": 3,
+  "train_before": "2015-02-15T21:52:13.000000Z",
+  "eval_before": "2015-04-30T13:36:53.000000Z",
+  "counts": {
+    "train": 58,
+    "validation": 2
+  },
+  "excluded": [
+    {
+      "id": "XD-232",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:520"
+      ],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-233",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 2
+    },
+    {
+      "id": "XD-234",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-235",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:2693"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-237",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-239",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:3446",
+        "tawos-v1.1:3478",
+        "tawos-v1.1:3763"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-300",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:3489"
+      ],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-387",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:3114"
+      ],
+      "unresolved_reference_count": 2
+    },
+    {
+      "id": "XD-464",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:2944"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-696",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:871"
+      ],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 3
+    },
+    {
+      "id": "XD-836",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:2847",
+        "tawos-v1.1:2935",
+        "tawos-v1.1:2948",
+        "tawos-v1.1:2949",
+        "tawos-v1.1:2954",
+        "tawos-v1.1:2955"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-963",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:3114",
+        "tawos-v1.1:3489"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-964",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-975",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-982",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:686"
+      ],
+      "quarantined_item_ids": [
+        "tawos-v1.1:686"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-983",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-996",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:2793"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-1141",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:2408"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-1610",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:3449"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-1820",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:2223"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-2062",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:1400"
+      ],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-2152",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:564",
+        "tawos-v1.1:632",
+        "tawos-v1.1:909"
+      ],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-2156",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 3
+    },
+    {
+      "id": "XD-2157",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:156"
+      ],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-2167",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-2356",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 6
+    },
+    {
+      "id": "XD-2399",
+      "split": "train",
+      "reason": "plan group contains a child with an unresolved Epic Link",
+      "item_ids": [],
+      "quarantined_item_ids": [
+        "tawos-v1.1:1501",
+        "tawos-v1.1:1757",
+        "tawos-v1.1:1758"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-2663",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:483"
+      ],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-2954",
+      "split": "validation",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:1400",
+        "tawos-v1.1:871"
+      ],
+      "quarantined_item_ids": [],
+      "unresolved_reference_count": 1
+    }
+  ],
+  "labels_available": false,
+  "held_out_reconstructed": false,
+  "held_out_evidence_ids_excluded": 292,
+  "quarantined_child_count": 70,
+  "quarantined_child_ids": [
+    "tawos-v1.1:1003",
+    "tawos-v1.1:1005",
+    "tawos-v1.1:1501",
+    "tawos-v1.1:1571",
+    "tawos-v1.1:1598",
+    "tawos-v1.1:1757",
+    "tawos-v1.1:1758",
+    "tawos-v1.1:2108",
+    "tawos-v1.1:2223",
+    "tawos-v1.1:2257",
+    "tawos-v1.1:2408",
+    "tawos-v1.1:2423",
+    "tawos-v1.1:2464",
+    "tawos-v1.1:2555",
+    "tawos-v1.1:2659",
+    "tawos-v1.1:2660",
+    "tawos-v1.1:2672",
+    "tawos-v1.1:2693",
+    "tawos-v1.1:2735",
+    "tawos-v1.1:2793",
+    "tawos-v1.1:2847",
+    "tawos-v1.1:2867",
+    "tawos-v1.1:2885",
+    "tawos-v1.1:2935",
+    "tawos-v1.1:2944",
+    "tawos-v1.1:2948",
+    "tawos-v1.1:2949",
+    "tawos-v1.1:2950",
+    "tawos-v1.1:2954",
+    "tawos-v1.1:2955",
+    "tawos-v1.1:2957",
+    "tawos-v1.1:2984",
+    "tawos-v1.1:2994",
+    "tawos-v1.1:3114",
+    "tawos-v1.1:3145",
+    "tawos-v1.1:3157",
+    "tawos-v1.1:3169",
+    "tawos-v1.1:3170",
+    "tawos-v1.1:3185",
+    "tawos-v1.1:3194",
+    "tawos-v1.1:3199",
+    "tawos-v1.1:3205",
+    "tawos-v1.1:3211",
+    "tawos-v1.1:3274",
+    "tawos-v1.1:3275",
+    "tawos-v1.1:3290",
+    "tawos-v1.1:3352",
+    "tawos-v1.1:3353",
+    "tawos-v1.1:3354",
+    "tawos-v1.1:3355",
+    "tawos-v1.1:3356",
+    "tawos-v1.1:3360",
+    "tawos-v1.1:3400",
+    "tawos-v1.1:3422",
+    "tawos-v1.1:3446",
+    "tawos-v1.1:3448",
+    "tawos-v1.1:3449",
+    "tawos-v1.1:3455",
+    "tawos-v1.1:3472",
+    "tawos-v1.1:3478",
+    "tawos-v1.1:3489",
+    "tawos-v1.1:3537",
+    "tawos-v1.1:3554",
+    "tawos-v1.1:3559",
+    "tawos-v1.1:3569",
+    "tawos-v1.1:3587",
+    "tawos-v1.1:3624",
+    "tawos-v1.1:3727",
+    "tawos-v1.1:3763",
+    "tawos-v1.1:686"
+  ],
+  "evidence_ids_excluded": 361,
+  "membership_ambiguities": [],
+  "absent_reference_policy": "exclude-unimported",
+  "verified_absent_held_out_references": [
+    {
+      "parent_item_id": "tawos-v1.1:491",
+      "label": "XD-3272",
+      "jira_id": "64868",
+      "source": "tawos-v1.1",
+      "imported_identity_count": 3707,
+      "complete_issue_identity_coverage": true,
+      "unique_keys_and_jira_ids": true,
+      "identity_metadata_sha256": "f8eea06c5920e04c1a723bd49754f0cdfa2f63ae7044dd7e056c4ee70ca3e62a",
+      "matching_imported_or_raw_issue_identities": 0,
+      "disposition": "outside_imported_identity_universe",
+      "limitation": "Referenced child is absent from the imported source; its text, scope and outcomes are unavailable. No membership was invented."
+    }
+  ],
+  "group_check": "conservative_all_time_membership_reference_metadata",
+  "limitations": [
+    "Current epic type is used only to select dataset locators; historical model fields are reconstructed independently.",
+    "A one-day review window may have little recoverable scope; inspect drafts before labelling.",
+    "Grouping catches shared observed plan tickets, not semantic duplicates.",
+    "Ratios are approximate when boundaries or exclusions affect counts.",
+    "Held-out cutoff plans are not reconstructed or emitted. Their roots and all-time observed members are withheld from development prior evidence, including prior scope reconstruction containing those references. HistoricalReader still loads underlying source records internally for historical reconstruction. Cross-partition exclusion uses membership reference metadata and can conservatively exclude memberships absent at a review cutoff.",
+    "Conflicting membership identities contribute every resolvable candidate to group checks. Unresolved held-out parent references stop preparation before reconstruction. Children with unresolved Epic Links are quarantined from development plans and evidence without assigning them a held-out partition.",
+    "Explicit exclude-unimported policy: listed held-out child references have both key and stable Jira ID absent from the imported/raw source identity metadata, with complete unique imported identity coverage. Missing children cannot be supplied development items, but their scope is unknown. Label-only or incompletely identified references still stop preparation; all unresolved child links remain quarantined."
+  ]
+}

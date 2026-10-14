@@ -21,8 +21,11 @@ __pycache__/
 /data/source/*.partial
 /data/source/figshare-metadata.json
 /data/slm-environment.lock.txt
+/data/training/local-preflight.*/
+/data/training/run-epoch*/
 
 # Superseded working runs and locally reconstructed XD holdout inputs.
+/data/training/xd-candidate-work/
 /data/training/ticket-timeline/
 /data/training/xd-80-20/
 /data/training/xd-training-readiness-v1/

@@ -1,0 +1,170 @@
+{
+  "version": "nabu-assistant-pretraining-audit-v1",
+  "audited_at": "2026-10-14T20:47:44.266715+00:00",
+  "repository_base": "19c56e8ec4320ec09be67424b5585693c6c461e6",
+  "status": "ready_for_first_experimental_epoch",
+  "requested_training_machine": {
+    "chip": "M4 Pro",
+    "unified_memory_gb": 48,
+    "confirmed_by_user": true,
+    "remote_gpu_verified": false
+  },
+  "training_started": false,
+  "push_performed": false,
+  "commit_performed": false,
+  "needs_commit_and_push": true,
+  "default_training_dataset": "data/training/xd-assistant-reviewed-v3",
+  "review": {
+    "reviewer": "Codex",
+    "reviewer_kind": "assistant",
+    "human_approved": false,
+    "label_review_complete": true,
+    "extra_human_signature_pending": false,
+    "development_cases_read": 60,
+    "approved_without_text_change": 57,
+    "candidate_questions_adjudicated": 19,
+    "pending_labelling_questions": 0,
+    "text_corrections": [
+      {
+        "id": "XD-2053",
+        "correction": "ElasticSearch/Redis sink input payloads; previously called source payloads"
+      },
+      {
+        "id": "XD-2263",
+        "correction": "XD-1683 is syslog-TCP errorChannel handling, not Redis input handling"
+      },
+      {
+        "id": "XD-2267",
+        "correction": "Eligible prior items are 1901, not 1963"
+      }
+    ]
+  },
+  "development": {
+    "train_examples": 58,
+    "validation_examples": 2,
+    "positive_train_examples": 3,
+    "no_supported_train_risk_examples": 55,
+    "validation_positive_examples": 0,
+    "max_sequence_tokens": 6547,
+    "context_budget": 8192,
+    "risk_types_and_evaluation_limits": {
+      "positive_findings_by_type": {
+        "train": {
+          "dependency_gap": 1,
+          "scope_gap": 0,
+          "validation_gap": 2
+        },
+        "validation": {
+          "dependency_gap": 0,
+          "scope_gap": 0,
+          "validation_gap": 0
+        }
+      },
+      "validation_positive_examples": 0,
+      "risk_recall_estimable": false,
+      "missing_positive_training_types": [
+        "scope_gap"
+      ],
+      "production_quality_verified": false,
+      "warnings": [
+        "Validation has no positive reference risks; recall is undefined.",
+        "No positive training examples for: scope_gap"
+      ]
+    },
+    "root_title_unknown": 46,
+    "root_description_unknown": 48,
+    "no_supplied_prior_evidence": 5
+  },
+  "external_reference": {
+    "path": "data/external-test/mesos-ai-reference-v1",
+    "sample_cases": 32,
+    "positive_reference_cases": 3,
+    "risk_type": "validation_gap",
+    "reviewer_kind": "assistant",
+    "independent_ground_truth": false,
+    "allowed_use": "frozen post-training comparison only; never training or parameter/prompt selection",
+    "model_evaluation_started": false,
+    "max_prompt_tokens": 12577,
+    "required_serving_context": 16384,
+    "recommended_max_output_tokens": 2048,
+    "noncanonical_source_mappings": "kept explicit, not guessed"
+  },
+  "verified": {
+    "latest_main_pulled": "19c56e8ec4320ec09be67424b5585693c6c461e6",
+    "latest_origin_main_rechecked": "19c56e8ec4320ec09be67424b5585693c6c461e6",
+    "development_reconstruction": "drafts, grouping proof and split report reproduced byte-for-byte from local read-only SQLite",
+    "schema_exact_citations": "passed for all 60 development and 32 external references",
+    "frozen_inputs": "unchanged and bound to preparation/review hashes",
+    "development_group_time_exclusion_checks": "passed",
+    "external_development_identity_overlap": 0,
+    "assistant_only_loss_prefix": "passed all 60 on the pinned original tokenizer, thinking disabled",
+    "portable_copy_without_database_models_or_original_paths": "passed",
+    "preparation_never_calls_labelled_training": "integration check passed",
+    "pinned_dependencies": "99 versions; native macOS arm64 Python 3.14",
+    "regression_tests_passed": 120,
+    "launcher_syntax": "passed"
+  },
+  "remaining_on_training_computer": [
+    "Pull the committed/pushed changes.",
+    "Run prepare-epoch1.sh to install the locked environment, download/convert the pinned base, and check the actual Metal device.",
+    "Optional --calibrate-gpu validates synthetic gradients/memory without ticket-data training.",
+    "Start epoch one separately when the user chooses."
+  ],
+  "quality": {
+    "ready_for_experiment": true,
+    "production_quality_verified": false,
+    "risk_recall_on_development_validation_estimable": false,
+    "severity_and_confidence_calibrated_to_company": false,
+    "limitations": [
+      "Only three positive training cases; majority abstention can encourage an always-empty answer.",
+      "Two validation cases, neither positive; risk recall is undefined.",
+      "No positive scope_gap training examples. Missing historical text remains unknown.",
+      "AI-generated/reviewed references are not independent adjudicated ground truth.",
+      "The actual remote base conversion, full GPU calibration and model quality were not run here.",
+      "Post-training base/adapter/deployment comparisons remain required for quality claims."
+    ]
+  },
+  "push_inventory": "data/training/assistant-audit-v1/change-inventory.json",
+  "files_sha256": {
+    ".gitignore": "533d602307f43b5846db752374e2e839e8f1479578e3f8bf6a4a6afc2a61716b",
+    "README.md": "22d0c1453e7eaf0a0169b382c62948003fe217d00777f79b7b488e5239676c9e",
+    "data/external-test/mesos-ai-reference-v1/case-drafts.jsonl": "86acb01ad271b03f5a247354fa67312e459f60646d88c0b35074aa8cf28836e8",
+    "data/external-test/mesos-ai-reference-v1/preparation.json": "6c7f802b0157c12b3d65521a4cc908b6d5aff0e6dc055114d1bc425cb900afcc",
+    "data/external-test/mesos-ai-reference-v1/reference-labels.jsonl": "09181756e26eae764e6fa8c0b1fdb1cc15f316c75927cac76236be177d4046f0",
+    "data/external-test/mesos-ai-reference-v1/reference-review.json": "5e01f41a042c1c6e60dd206ee82e01527a14f99d25edc7f0dfa7363a2d5d769b",
+    "data/external-test/mesos-ai-reference-v1/semantic-audit.jsonl": "50aea0929c8ea049b2863cc338d207ab961b60839b361905c90ded6584dbab0d",
+    "data/external-test/mesos-ai-reference-v1/token-profile.json": "c2546fef7d2be80b4ee84e5be38c0ba7f85470e078f635ce699d09166771cc1c",
+    "data/training/assistant-audit-v1/review-decisions.jsonl": "fc0a154ce90628936f84f8b21842b6e28b3f42a9c27727dd710374a1abc5ed4d",
+    "data/training/assistant-audit-v1/semantic-audit.jsonl": "2b6a3f9a61f0d02338091f7a448f1498b249f16168d5aaae49ae5af1b3cdf465",
+    "data/training/epoch1-readiness/readiness.md": "6f2b43ab2e17d901666d5a2ad23d8af6fd6a14d02ed2b5a105f295a2cf0c3dc1",
+    "data/training/xd-assistant-reviewed-v3/grouping-proof.json": "b453e1b41247b2ff812deb09782d140668e1fa2b949757fe14b259e9358ad5a4",
+    "data/training/xd-assistant-reviewed-v3/preparation-manifest.json": "19cf968f2d872503d81fb71f887acfb190651f50bed7c8e59d6c0b83ab677f75",
+    "data/training/xd-assistant-reviewed-v3/review-export.json": "a8951bdf647144de5d1af188dd1fbc01f435b2438a10e32b72c988becaac2309",
+    "data/training/xd-assistant-reviewed-v3/split-report.json": "f4f9b70cc9d98e364316729ddba601fe8329a14ee9f93db322c81a38af3e7ef3",
+    "data/training/xd-assistant-reviewed-v3/token-profile.json": "cb2dfa712d6e2cc8a2a8bd4016d1feb05d4f0a3bbb121996edcceb0685fbcf1a",
+    "data/training/xd-assistant-reviewed-v3/train.jsonl": "63a60b3b35212acfc1d0c7a6c617196591ee0b6f9b261d6af3ab7c2aa776f4ab",
+    "data/training/xd-assistant-reviewed-v3/validation.jsonl": "02cd5f6d60a8aba3075575af22f8da8e5ddb0f0ee0caf2bae075e0a6348fb8e4",
+    "docs/external-testing.md": "8458568b1d19e880007661b4d6cb1b249ba2b8070421f262e9fa093854e09999",
+    "docs/slm-training.md": "1cd9ecff267326f5c9d5e4a75affe39aa901f188c33d0fa14ae52c1275f7c3b6",
+    "docs/slm.md": "539e04c8f57ab4191780d4d56551226176f629299642944ef3546bb785a25dac",
+    "docs/training-handoff.md": "b88f7813627e0395161a9c320c140e11453feb5620fe8adbd3f51a26b672cd93",
+    "nabu/cli.py": "572f4e8ced7f0b54a03089d14d51d4bddda40d28b7834e4a9cba9734ec1e44e4",
+    "nabu/label_review.py": "43faa9245320d9b1073700d08e55e535af281b9b2be74f0a221266d39d33cc60",
+    "nabu/slm.py": "7be6877a69abab994b6b031d44ee0ed3c68aeaa6c148baa296ec926167e9a52e",
+    "requirements/slm-mac.lock.txt": "0ce38ec47359d43eda4c13a9c74c848751d538382fdb03f4113be7d9a86f1b40",
+    "scripts/check-external-reference.py": "31c22f94e316c0ba75be872c25ac18b687d89fb54216671723c7864cc05fa8ad",
+    "scripts/check-reviewed-data.py": "ce70880585ec3ee16bca22d24333e8d658b076625b2737c0fff3a12522b527f5",
+    "scripts/export-reviewed-slm.py": "dc4e7bb39d906a4b1197149f531ec72ffe60165b70db28cc19f2493ce7dc5466",
+    "scripts/prepare-epoch1.sh": "7e943ffc77428bfd2f452a265e38c6b16d74041837edef6107335478ad69d8eb",
+    "scripts/prepare-external-reference.py": "48554404fb98a712839a83b1b07b5431aa36ec9886942082891531da88d94389",
+    "scripts/prepare-slm-model.py": "c3fb8098fbc1a19e6feeaf41eb282c923cca1da0bb8bf8fa8e4203e5d75da34c",
+    "scripts/start-epoch1.sh": "0ffc9bb1748aed6571c3673c77ca6d7f2a98abd145d56709b1c771d51ac81f1d",
+    "scripts/train-slm-mlx.py": "9fa3ea7b4900331df6da66431d76c4ac50be237edf336cef3d6e2478b8204ca4",
+    "tests/test_external_reference.py": "117478d662a94e59d8ab053298675bf25f6d3815f8c4d59ab1e60a70e4a02716",
+    "tests/test_label_review.py": "4c3600189a70b116f7f8f49c8bd71811c36c3b5ee21c889a6009e39f23a95bd7",
+    "tests/test_slm.py": "055e400a55869548f968e357845502541023818b69a4112ef4fa2de2c423c465",
+    "tests/test_slm_training.py": "d6b4c9caa28ed391806af2a515f706fcf6f9e9f95bf68bce08636df7187cb72e",
+    "tests/test_training_handoff.py": "f57dd7ad9bb08ca6deefa64057668f91f180a7e62cef662676d9fb39abdca854"
+  },
+  "publication_state_scope": "commit_performed, push_performed and needs_commit_and_push describe the snapshot at audited_at before publication; consult Git history and the remote branch for current publication status."
+}

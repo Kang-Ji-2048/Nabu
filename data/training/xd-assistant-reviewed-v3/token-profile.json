@@ -1,0 +1,445 @@
+{
+  "checkpoint": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "template": "original_checkpoint",
+  "enable_thinking": false,
+  "max_seq_length": 8192,
+  "max_tokens": 6547,
+  "assistant_prefix_checks": "passed_all_60",
+  "silent_truncation": false,
+  "model_weights_or_gpu_loaded": false,
+  "training_started": false,
+  "transformers_version": "5.19.0",
+  "tokenizer_sha256": {
+    "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "tokenizer_config.json": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+    "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+  },
+  "dataset_sha256": {
+    "train.jsonl": "63a60b3b35212acfc1d0c7a6c617196591ee0b6f9b261d6af3ab7c2aa776f4ab",
+    "validation.jsonl": "02cd5f6d60a8aba3075575af22f8da8e5ddb0f0ee0caf2bae075e0a6348fb8e4"
+  },
+  "examples": [
+    {
+      "id": "XD-75",
+      "split": "train",
+      "full_tokens": 2352,
+      "prompt_tokens": 2251,
+      "target_tokens": 101
+    },
+    {
+      "id": "XD-92",
+      "split": "train",
+      "full_tokens": 543,
+      "prompt_tokens": 482,
+      "target_tokens": 61
+    },
+    {
+      "id": "XD-177",
+      "split": "train",
+      "full_tokens": 4274,
+      "prompt_tokens": 4157,
+      "target_tokens": 117
+    },
+    {
+      "id": "XD-238",
+      "split": "train",
+      "full_tokens": 4215,
+      "prompt_tokens": 4101,
+      "target_tokens": 114
+    },
+    {
+      "id": "XD-240",
+      "split": "train",
+      "full_tokens": 539,
+      "prompt_tokens": 484,
+      "target_tokens": 55
+    },
+    {
+      "id": "XD-241",
+      "split": "train",
+      "full_tokens": 2878,
+      "prompt_tokens": 2754,
+      "target_tokens": 124
+    },
+    {
+      "id": "XD-395",
+      "split": "train",
+      "full_tokens": 5488,
+      "prompt_tokens": 5368,
+      "target_tokens": 120
+    },
+    {
+      "id": "XD-468",
+      "split": "train",
+      "full_tokens": 4287,
+      "prompt_tokens": 4143,
+      "target_tokens": 144
+    },
+    {
+      "id": "XD-484",
+      "split": "train",
+      "full_tokens": 2969,
+      "prompt_tokens": 2857,
+      "target_tokens": 112
+    },
+    {
+      "id": "XD-527",
+      "split": "train",
+      "full_tokens": 3438,
+      "prompt_tokens": 3293,
+      "target_tokens": 145
+    },
+    {
+      "id": "XD-697",
+      "split": "train",
+      "full_tokens": 5308,
+      "prompt_tokens": 5182,
+      "target_tokens": 126
+    },
+    {
+      "id": "XD-706",
+      "split": "train",
+      "full_tokens": 6048,
+      "prompt_tokens": 5900,
+      "target_tokens": 148
+    },
+    {
+      "id": "XD-742",
+      "split": "train",
+      "full_tokens": 5940,
+      "prompt_tokens": 5833,
+      "target_tokens": 107
+    },
+    {
+      "id": "XD-895",
+      "split": "train",
+      "full_tokens": 4906,
+      "prompt_tokens": 4722,
+      "target_tokens": 184
+    },
+    {
+      "id": "XD-965",
+      "split": "train",
+      "full_tokens": 5627,
+      "prompt_tokens": 5502,
+      "target_tokens": 125
+    },
+    {
+      "id": "XD-1257",
+      "split": "train",
+      "full_tokens": 6529,
+      "prompt_tokens": 6379,
+      "target_tokens": 150
+    },
+    {
+      "id": "XD-1258",
+      "split": "train",
+      "full_tokens": 910,
+      "prompt_tokens": 851,
+      "target_tokens": 59
+    },
+    {
+      "id": "XD-1259",
+      "split": "train",
+      "full_tokens": 4896,
+      "prompt_tokens": 4727,
+      "target_tokens": 169
+    },
+    {
+      "id": "XD-1260",
+      "split": "train",
+      "full_tokens": 5318,
+      "prompt_tokens": 4835,
+      "target_tokens": 483
+    },
+    {
+      "id": "XD-1267",
+      "split": "train",
+      "full_tokens": 4594,
+      "prompt_tokens": 4474,
+      "target_tokens": 120
+    },
+    {
+      "id": "XD-1275",
+      "split": "train",
+      "full_tokens": 5138,
+      "prompt_tokens": 5015,
+      "target_tokens": 123
+    },
+    {
+      "id": "XD-1317",
+      "split": "train",
+      "full_tokens": 5371,
+      "prompt_tokens": 4936,
+      "target_tokens": 435
+    },
+    {
+      "id": "XD-1391",
+      "split": "train",
+      "full_tokens": 4131,
+      "prompt_tokens": 4009,
+      "target_tokens": 122
+    },
+    {
+      "id": "XD-1392",
+      "split": "train",
+      "full_tokens": 4707,
+      "prompt_tokens": 4600,
+      "target_tokens": 107
+    },
+    {
+      "id": "XD-1405",
+      "split": "train",
+      "full_tokens": 689,
+      "prompt_tokens": 608,
+      "target_tokens": 81
+    },
+    {
+      "id": "XD-1473",
+      "split": "train",
+      "full_tokens": 6547,
+      "prompt_tokens": 6334,
+      "target_tokens": 213
+    },
+    {
+      "id": "XD-1605",
+      "split": "train",
+      "full_tokens": 5105,
+      "prompt_tokens": 4617,
+      "target_tokens": 488
+    },
+    {
+      "id": "XD-1606",
+      "split": "train",
+      "full_tokens": 5608,
+      "prompt_tokens": 5488,
+      "target_tokens": 120
+    },
+    {
+      "id": "XD-1607",
+      "split": "train",
+      "full_tokens": 5776,
+      "prompt_tokens": 5586,
+      "target_tokens": 190
+    },
+    {
+      "id": "XD-1608",
+      "split": "train",
+      "full_tokens": 5151,
+      "prompt_tokens": 4997,
+      "target_tokens": 154
+    },
+    {
+      "id": "XD-1609",
+      "split": "train",
+      "full_tokens": 4936,
+      "prompt_tokens": 4776,
+      "target_tokens": 160
+    },
+    {
+      "id": "XD-1647",
+      "split": "train",
+      "full_tokens": 4382,
+      "prompt_tokens": 4259,
+      "target_tokens": 123
+    },
+    {
+      "id": "XD-1688",
+      "split": "train",
+      "full_tokens": 4672,
+      "prompt_tokens": 4548,
+      "target_tokens": 124
+    },
+    {
+      "id": "XD-1694",
+      "split": "train",
+      "full_tokens": 3246,
+      "prompt_tokens": 3126,
+      "target_tokens": 120
+    },
+    {
+      "id": "XD-1821",
+      "split": "train",
+      "full_tokens": 5910,
+      "prompt_tokens": 5744,
+      "target_tokens": 166
+    },
+    {
+      "id": "XD-1832",
+      "split": "train",
+      "full_tokens": 3899,
+      "prompt_tokens": 3763,
+      "target_tokens": 136
+    },
+    {
+      "id": "XD-1875",
+      "split": "train",
+      "full_tokens": 5336,
+      "prompt_tokens": 5245,
+      "target_tokens": 91
+    },
+    {
+      "id": "XD-2052",
+      "split": "train",
+      "full_tokens": 6147,
+      "prompt_tokens": 5942,
+      "target_tokens": 205
+    },
+    {
+      "id": "XD-2053",
+      "split": "train",
+      "full_tokens": 6060,
+      "prompt_tokens": 5964,
+      "target_tokens": 96
+    },
+    {
+      "id": "XD-2054",
+      "split": "train",
+      "full_tokens": 5511,
+      "prompt_tokens": 5393,
+      "target_tokens": 118
+    },
+    {
+      "id": "XD-2089",
+      "split": "train",
+      "full_tokens": 4075,
+      "prompt_tokens": 3931,
+      "target_tokens": 144
+    },
+    {
+      "id": "XD-2106",
+      "split": "train",
+      "full_tokens": 5294,
+      "prompt_tokens": 5155,
+      "target_tokens": 139
+    },
+    {
+      "id": "XD-2134",
+      "split": "train",
+      "full_tokens": 6168,
+      "prompt_tokens": 5905,
+      "target_tokens": 263
+    },
+    {
+      "id": "XD-2204",
+      "split": "train",
+      "full_tokens": 4253,
+      "prompt_tokens": 4132,
+      "target_tokens": 121
+    },
+    {
+      "id": "XD-2252",
+      "split": "train",
+      "full_tokens": 5602,
+      "prompt_tokens": 5461,
+      "target_tokens": 141
+    },
+    {
+      "id": "XD-2263",
+      "split": "train",
+      "full_tokens": 5051,
+      "prompt_tokens": 4867,
+      "target_tokens": 184
+    },
+    {
+      "id": "XD-2267",
+      "split": "train",
+      "full_tokens": 729,
+      "prompt_tokens": 609,
+      "target_tokens": 120
+    },
+    {
+      "id": "XD-2292",
+      "split": "train",
+      "full_tokens": 5125,
+      "prompt_tokens": 4996,
+      "target_tokens": 129
+    },
+    {
+      "id": "XD-2297",
+      "split": "train",
+      "full_tokens": 4242,
+      "prompt_tokens": 4075,
+      "target_tokens": 167
+    },
+    {
+      "id": "XD-2336",
+      "split": "train",
+      "full_tokens": 3683,
+      "prompt_tokens": 3567,
+      "target_tokens": 116
+    },
+    {
+      "id": "XD-2374",
+      "split": "train",
+      "full_tokens": 5343,
+      "prompt_tokens": 5216,
+      "target_tokens": 127
+    },
+    {
+      "id": "XD-2464",
+      "split": "train",
+      "full_tokens": 5854,
+      "prompt_tokens": 5681,
+      "target_tokens": 173
+    },
+    {
+      "id": "XD-2476",
+      "split": "train",
+      "full_tokens": 4507,
+      "prompt_tokens": 4388,
+      "target_tokens": 119
+    },
+    {
+      "id": "XD-2500",
+      "split": "train",
+      "full_tokens": 4576,
+      "prompt_tokens": 4432,
+      "target_tokens": 144
+    },
+    {
+      "id": "XD-2540",
+      "split": "train",
+      "full_tokens": 4140,
+      "prompt_tokens": 3986,
+      "target_tokens": 154
+    },
+    {
+      "id": "XD-2629",
+      "split": "train",
+      "full_tokens": 4312,
+      "prompt_tokens": 4140,
+      "target_tokens": 172
+    },
+    {
+      "id": "XD-2660",
+      "split": "train",
+      "full_tokens": 3125,
+      "prompt_tokens": 3008,
+      "target_tokens": 117
+    },
+    {
+      "id": "XD-2692",
+      "split": "train",
+      "full_tokens": 3728,
+      "prompt_tokens": 3558,
+      "target_tokens": 170
+    },
+    {
+      "id": "XD-2963",
+      "split": "validation",
+      "full_tokens": 4139,
+      "prompt_tokens": 3993,
+      "target_tokens": 146
+    },
+    {
+      "id": "XD-2978",
+      "split": "validation",
+      "full_tokens": 4031,
+      "prompt_tokens": 3920,
+      "target_tokens": 111
+    }
+  ]
+}

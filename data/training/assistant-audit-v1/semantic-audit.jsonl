@@ -1,0 +1,60 @@
+{"id": "XD-75", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "计划只有 Redis 打包标题；XD-41 是测试依赖问题，XD-61 是分发需求，无法据此认定打包计划遗漏工作。保留空风险与限制说明。"}
+{"id": "XD-92", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "计划标题、描述和范围均未知，没有提供历史证据；只能作为资料不足时停止判断的样本。"}
+{"id": "XD-177", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "协议参数与 launcher 导入已经列入计划；Redis 关闭、Windows 二进制和 FactoryBean 初始化事件没有共同的已证实适用机制。"}
+{"id": "XD-238", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "打包一致性和部署 profiles 已在计划中；XD-245 是验收要求而非失败证明，另一个成员未知。空风险合理，不能解释为项目安全。"}
+{"id": "XD-240", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "无计划文本、无已观察成员、无检索到的历史证据，无法判断风险。"}
+{"id": "XD-241", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "消息转换已列入 XD-162；XD-164 单独提出 channel 验证要求，不能推断当前计划漏做；既有协议和 launcher 支持已完成。"}
+{"id": "XD-395", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "已见任务是将 HTTP/Twitter 文档改用 Shell；匿名 Twitter API 故障没有连接到具体使用版本，另有七个成员未显示，不能断定缺失。"}
+{"id": "XD-468", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "Hadoop 分发选择与 Avro 调研已列入；既有 HDFS 配置问题和 LZO 许可要求不能证明 Avro 失败，多个成员文本未知。"}
+{"id": "XD-484", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "Spring Shell 测试设施已被明确规划；SI 版本不匹配不等于此处 Shell 测试设施会失败，不能标为漏测试。"}
+{"id": "XD-527", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "唯一已知成员是 Reactor syslog 集成测试；TCP/syslog 既有工作和无害 transformer 日志没有建立新的 Reactor 失败机制。"}
+{"id": "XD-697", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "计划已有隔离、跨 transport 测试和格式断言；failed-create/retry 与 Redis recreate 故障值得检查，但未证明这些场景被排除。"}
+{"id": "XD-706", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "XD-353 已包含上下文隔离、共享 beans 及防止重复实例的单元测试，XD-711 处理 MBeanServer 位置；旧故障不能直接标为当前遗漏。"}
+{"id": "XD-742", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "StreamDefinitionResource 的 XML marshalling 与跨域 Kodiak 故障，没有给出与待整合 JobAdminController 的响应类型或页面 origin 的对应关系。"}
+{"id": "XD-895", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "转换配置已在 XD-896 中；完成的内容类型保持和 JSON/POJO 支持是反例，Shell/JMX 故障不能当作新通道转换故障。"}
+{"id": "XD-965", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "NameNode 默认值与持久化问题已被计划承认；未能关联 HDFS、JobRepository、Rabbit naming 事件到具体遗漏，大部分范围未知。"}
+{"id": "XD-1257", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "计划明列 EC2 清理、并行部署、成功失败产物、单节点与 Rabbit 分布式验收和结果回读；既有 EC2 端口检查与清理是反例。"}
+{"id": "XD-1258", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "根和三名成员全部缺少标题描述，且没有历史证据；可以教模型停止判断，不能作为已证实安全的负例。"}
+{"id": "XD-1259", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "明确的是四种 Hadoop AMI；旧 Guava 冲突涉及不同版本且未说明这些 AMI 是否含 XD 的 classpath，不能推断实际依赖缺口。"}
+{"id": "XD-1260", "decision": "accept_with_limitations", "meaning": "conditional_risk", "reason": "XD-1206 明确记录未解决的分区 StepExecution 空 ID 及再次运行后的失败，XD-1127 为计划中的多节点分区，XD-703 建立共享持久化前提。条件性检查建议有证据，不能宣称验证工作必然缺失；medium 级别没有公司规则支持。"}
+{"id": "XD-1267", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "共享 client/server model 项目已明确安排；Shell whitespace 与丢失错误详情并未关联到新的 model/wire format，兼容承诺未知。"}
+{"id": "XD-1275", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "仅明确消除自定义模块路径中的重复名称；DSL 命名栈溢出与文件路径不同机制，旧新打包兼容要求不能证明当前修改违反它。"}
+{"id": "XD-1317", "decision": "accept_with_limitations", "meaning": "conditional_risk", "reason": "YARN AppMaster/部署脚本属于计划，XD-1318 和 XD-703 建立 admin/database 初始化先后机制。适合作为条件性 readiness 检查；两个历史任务均 Done，不能标为已证实未修复的 dependency gap，也没有公司 severity 依据。"}
+{"id": "XD-1391", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "可恢复工作是 Angular MVC prototype；已有 Angular build/test automation，E2E warning 不能证明 spike 缺少生产测试，后端 JMX/Rabbit 故障无直接关联。"}
+{"id": "XD-1392", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "只有大写属性名迁移标题，别名和 precedence 改动未知；已完成的 YAML shadowing 与 CLI defaults 故障未被证明会重现。"}
+{"id": "XD-1405", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "根与唯一成员无文本、无检索证据；限制明确说明不能据此认定安全，空风险合理。"}
+{"id": "XD-1473", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "parser、仓库与 module identity 重构以及 runtime 文档已列入计划；ZooKeeper connect string 已完成，Netty/Lettuce 与 classloader 事件不证明当前重构遗漏。"}
+{"id": "XD-1605", "decision": "accept_with_limitations", "meaning": "conditional_risk", "reason": "XD-1497 计划迁移到 management/jolokia，XD-1496 同一路径异常尚 To Do；完成的 XD-1396 仅支持条件性启动检查。主建议适用，但原因、复现和所用 management port 未知，medium 不能当公司风险等级。"}
+{"id": "XD-1606", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "计划讨论命名不一致并明确两个 job aliases 都有效，没有说明删除别名；已完成 labels 与 shared-channel 修复不能证明当前破坏它们。"}
+{"id": "XD-1607", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "partial deployment failure、failed module identity 与 undeploy-all 都在 XD-1270 中；shutdown 顺序与 HTTP 线程泄漏并非状态模型的已证实缺口。TBD 需要确认而不是直接贴风险标签。"}
+{"id": "XD-1608", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "作业执行导航和未部署作业提交相关任务已纳入，旧共享 repository 与 listing 字段不是新的 UI 缺陷证据；其余成员缺文本。"}
+{"id": "XD-1609", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "transport 外部 jar extensibility 已明确完成，旧 enum 移除同为反例；ack、tx-size 等只列名称，不能关联 Hadoop classpath 或 database startup 故障。"}
+{"id": "XD-1647", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "计划明确提供所有 jobs/modules 测试覆盖；test matrix 未给出，不能推断漏掉 transport 与 controller 测试。"}
+{"id": "XD-1688", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "ELK 与 Stream-lib 只有主题标题，没有 contract/transport/验收要求，broadcasting 与 transform 失败无法连接到这些运营器。"}
+{"id": "XD-1694", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "REST authentication/authorization 已列入 XD-1695；提供的泛化测试和 JMX/HDFS/Windows 历史无适用安全故障机制。"}
+{"id": "XD-1821", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "parser entry points 与 descriptor 合并已列入；移除 module 文件导致 destroy 失败与 named channel 文本不能证明新的 parser 造成 tap/prefix 故障。旧正例被撤销是合理的。"}
+{"id": "XD-1832", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "目标本身处理 tab completion；两个成员无文本，不能宣称只测某类命令。旧 job-launch 与 HTTP completion 问题可做核对清单，未证明新计划遗漏它们。"}
+{"id": "XD-1875", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "等价迁移已有脚本测试已明确在计划中；真实输入与测试隔离的旧事项不能证明迁移会丢失覆盖。"}
+{"id": "XD-2052", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "新 source 的准确性、异常与缺字段验收已明确；旧 Rabbit 到 JDBC sink 与 Tweet classpath 故障不能证明新 JDBC source 有相同机制。"}
+{"id": "XD-2053", "decision": "revise_text_only", "meaning": "no_supported_risk", "reason": "ElasticSearch/Redis 是 sink，原文误写 source，需要修正；准确性与错误验收已经在计划内，旧 JDBC/Tweet 故障没有给出适用新 sink 的机制。"}
+{"id": "XD-2054", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "XD-2015 已计划修复缺失 chromedriver/配置；后端测试工具历史不构成第二个浏览器依赖故障。"}
+{"id": "XD-2089", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "自定义 module 打包、拆包与指导的研究已在 XD-2090 中；尚未选定方案，旧 zip/config 问题不能证明新方案遗漏。"}
+{"id": "XD-2106", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "拓扑可视化与部署 module 列表已列入，后端契约未知；旧孤立分区与 UI 示例不能证明新界面会出现相同问题。"}
+{"id": "XD-2134", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "错误通道、保留字与重启后分区保留均已明确在计划中；旧故障不能把已列任务再次标成遗漏。"}
+{"id": "XD-2204", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "R processor 的 rJava/Renjin 方案研究已经列出；未选定运行时，既有通用 module 事项不支持 R 集成故障。"}
+{"id": "XD-2252", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "XD-2253 明确测量每条网络边；XD broker 参数缺陷不能直接套用于独立 PerfTest/iperf，其他成员未知。"}
+{"id": "XD-2263", "decision": "revise_text_only", "meaning": "no_supported_risk", "reason": "基础设施、配置、工具链与生产消费规模已列入；XD-1683 是 syslog TCP 的错误通道路由失败，应精确描述，不能套用到 Rabbit 基准客户端。"}
+{"id": "XD-2267", "decision": "revise_text_only", "meaning": "insufficient_evidence", "reason": "根与成员文本都未知，检索返回零工单；eligible prior 数量应从 1,963 改为输入实际 1,901，不能把进行中状态当作延期。"}
+{"id": "XD-2292", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "只知道 message brokers 主题，两个成员文本未知；路由表达式/Redis 关停问题没有适用机制，已有跨 transport 转换设计构成反例。"}
+{"id": "XD-2297", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "gpfdist/gpload、PXF、Sqoop 与批处理选择的研究明确在 scope；未选定运行版本，单一 Guava 故障不能证明所有候选方案被阻塞。"}
+{"id": "XD-2336", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "Kafka 执行程序与性能工具已在完成的 AMI 任务中；根及其他成员未知，无法推断基准验收遗漏。"}
+{"id": "XD-2374", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "Reactor window 的 min/avg 已明确；REST 时间排序与 median 算法不在所述接口范围，micro-batch 只有标题。"}
+{"id": "XD-2464", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "Spark 接口、MessageBus receiver、module 类型和 driver 都列出；未知库布局/生命周期契约不能用旧 Jackson 冲突证明新冲突。"}
+{"id": "XD-2476", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "Sqoop 停止功能已明确计划；未知取消契约，旧 Jobstore 删除失败不等于 Sqoop cancel 使用同一清理机制。"}
+{"id": "XD-2500", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "Boot RELEASE 与依赖升级已列入；RC 升级已完成和历史 Hadoop 测试为反例，短标题不能证明缺少验证。"}
+{"id": "XD-2540", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "RxJava 接口与 processor/sink handler 在计划内；Reactor 错误处理研究不是 RxJava 的两次故障，尚未证明依赖未完成 error channel。"}
+{"id": "XD-2629", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "Ambari provisioning/management/monitoring 是明确研究任务；没有选定实现和依赖，Hadoop API/classpath 失败不能推定研究被阻塞。"}
+{"id": "XD-2660", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "Windows 测试覆盖已计划；已坏的分布式 CI 并非相同 Windows 机制，其他已完成的测试也是反例。"}
+{"id": "XD-2692", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "间歇 compression 失败与独立 Kafka server 进程都已列任务；已有 Kafka CI 覆盖，UI 单进程故障不能证明另一个 Kafka 遗漏。"}
+{"id": "XD-2963", "decision": "accept_with_limitations", "meaning": "insufficient_evidence", "reason": "两个成员文本未知，state backend/一致性/重启契约未提供；历史 partition 与 median 设计不能证明新的 stateful processing 遗漏。"}
+{"id": "XD-2978", "decision": "accept_with_limitations", "meaning": "no_supported_risk", "reason": "Receptor 重构、文档与 CF incubation 提交均已明确；仅一个相关已完成客户端，不具备第二个适用故障机制。"}

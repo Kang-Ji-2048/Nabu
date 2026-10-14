@@ -8,9 +8,11 @@ Run it with `python -m nabu assess`; `review` remains the legacy investigator
 baseline. See [the architecture overview](docs/architecture.md) and
 [the SLM setup and training handoff](docs/slm.md).
 
-The integration is implemented, but dataset labelling and SLM training are left
-to the model-training owner. Live assessment requires their trained model and
-provenance manifest. Offline mode is a wiring test, not a risk assessment.
+The integration includes an AI-reviewed experimental XD dataset and frozen
+Mesos test references. See [the M4 Pro 48GB training handoff](docs/training-handoff.md)
+for preparation and the separate training command. Live assessment still
+requires a trained model and provenance manifest. Offline mode is a wiring test,
+not a risk assessment.
 
 Nabu reads a team's ticket history from any tracker and warns them, before work starts, where a new plan is likely to go wrong.
 

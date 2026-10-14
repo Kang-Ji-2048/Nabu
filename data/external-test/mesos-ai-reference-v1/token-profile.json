@@ -1,0 +1,139 @@
+{
+  "checkpoint": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "enable_thinking": false,
+  "max_prompt_tokens": 12577,
+  "example_count": 32,
+  "examples": [
+    {
+      "id": "MESOS-3333",
+      "prompt_tokens": 5398
+    },
+    {
+      "id": "MESOS-3982",
+      "prompt_tokens": 7872
+    },
+    {
+      "id": "MESOS-3988",
+      "prompt_tokens": 606
+    },
+    {
+      "id": "MESOS-4011",
+      "prompt_tokens": 5820
+    },
+    {
+      "id": "MESOS-4133",
+      "prompt_tokens": 485
+    },
+    {
+      "id": "MESOS-4553",
+      "prompt_tokens": 5491
+    },
+    {
+      "id": "MESOS-4791",
+      "prompt_tokens": 4919
+    },
+    {
+      "id": "MESOS-4793",
+      "prompt_tokens": 12577
+    },
+    {
+      "id": "MESOS-4809",
+      "prompt_tokens": 7000
+    },
+    {
+      "id": "MESOS-4905",
+      "prompt_tokens": 612
+    },
+    {
+      "id": "MESOS-4921",
+      "prompt_tokens": 6025
+    },
+    {
+      "id": "MESOS-4945",
+      "prompt_tokens": 486
+    },
+    {
+      "id": "MESOS-5149",
+      "prompt_tokens": 7475
+    },
+    {
+      "id": "MESOS-5150",
+      "prompt_tokens": 5067
+    },
+    {
+      "id": "MESOS-5185",
+      "prompt_tokens": 5806
+    },
+    {
+      "id": "MESOS-5377",
+      "prompt_tokens": 5409
+    },
+    {
+      "id": "MESOS-5454",
+      "prompt_tokens": 4532
+    },
+    {
+      "id": "MESOS-5529",
+      "prompt_tokens": 5305
+    },
+    {
+      "id": "MESOS-6014",
+      "prompt_tokens": 6050
+    },
+    {
+      "id": "MESOS-6127",
+      "prompt_tokens": 5819
+    },
+    {
+      "id": "MESOS-6364",
+      "prompt_tokens": 8170
+    },
+    {
+      "id": "MESOS-6670",
+      "prompt_tokens": 7372
+    },
+    {
+      "id": "MESOS-7136",
+      "prompt_tokens": 489
+    },
+    {
+      "id": "MESOS-7575",
+      "prompt_tokens": 4556
+    },
+    {
+      "id": "MESOS-7706",
+      "prompt_tokens": 6906
+    },
+    {
+      "id": "MESOS-7738",
+      "prompt_tokens": 5430
+    },
+    {
+      "id": "MESOS-8054",
+      "prompt_tokens": 4444
+    },
+    {
+      "id": "MESOS-8432",
+      "prompt_tokens": 5537
+    },
+    {
+      "id": "MESOS-8668",
+      "prompt_tokens": 7016
+    },
+    {
+      "id": "MESOS-8882",
+      "prompt_tokens": 6722
+    },
+    {
+      "id": "MESOS-9101",
+      "prompt_tokens": 5471
+    },
+    {
+      "id": "MESOS-9916",
+      "prompt_tokens": 487
+    }
+  ],
+  "model_evaluation_started": false,
+  "policy": "Frozen external inputs unchanged; set deployment context/output budget explicitly before evaluation."
+}

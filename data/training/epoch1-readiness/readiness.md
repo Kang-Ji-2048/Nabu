@@ -1,4 +1,8 @@
-# Epoch 1 readiness
+# Historical epoch 1 readiness (superseded)
+
+This snapshot predates the user's selected Codex review. All 60 development labels have now received explicit AI review, with three text corrections, and the current export is `../xd-assistant-reviewed-v3`. The old pending human template below is retained as history. Use [the current M4 Pro 48GB handoff](../../../docs/training-handoff.md) and `../assistant-audit-v1/readiness.json` for the active preparation/launch path. AI review does not claim human approval.
+
+## Earlier snapshot
 
 Technical preparation is complete. Fine-tuning has not started. Human review of the version 2 labels is the remaining launch prerequisite.
 

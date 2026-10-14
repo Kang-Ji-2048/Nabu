@@ -88,6 +88,7 @@ def main(argv=None):
     baseline.add_argument("--dataset", type=Path, required=True)
     baseline.add_argument("--output", type=Path, required=True)
     baseline.add_argument("--model", required=True, help="Exact Ollama model name")
+    baseline.add_argument("--checkpoint", default="Qwen/Qwen3-4B-Instruct-2507", help="Expected source checkpoint; alias identity still requires separate verification")
     baseline.add_argument("--slm-endpoint", default="http://127.0.0.1:11434/v1")
     baseline.add_argument("--max-input-bytes", type=int, default=24000)
     baseline.add_argument("--max-tokens", type=int, default=4096)
@@ -100,7 +101,7 @@ def main(argv=None):
                                    eval_before=args.eval_before, risk_types=args.risk_types, limit=args.limit)
         elif args.command == "evaluate-slm-baseline":
             from .slm import evaluate_baseline
-            result = evaluate_baseline(args.dataset, args.output, model=args.model, endpoint=args.slm_endpoint,
+            result = evaluate_baseline(args.dataset, args.output, model=args.model, checkpoint=args.checkpoint, endpoint=args.slm_endpoint,
                                        max_input_bytes=args.max_input_bytes, max_tokens=args.max_tokens)
         elif args.command == "extract":
             result = export_mysql(args.project, args.output)

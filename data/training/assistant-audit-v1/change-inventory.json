@@ -1,0 +1,219 @@
+{
+  "base_commit": "19c56e8ec4320ec09be67424b5585693c6c461e6",
+  "file_count": 41,
+  "files": [
+    {
+      "path": ".gitignore",
+      "base_sha256": "0fa8dc63567a60ea64615aea2aac18a83723fbd07a596b1e8318064bfab2bc20",
+      "action": "modify"
+    },
+    {
+      "path": "README.md",
+      "base_sha256": "4186eb7ce47a73c0d2e9cb321223a565594f91f92957b58274fc26c63e53620b",
+      "action": "modify"
+    },
+    {
+      "path": "data/external-test/mesos-ai-reference-v1/case-drafts.jsonl",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/external-test/mesos-ai-reference-v1/preparation.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/external-test/mesos-ai-reference-v1/reference-labels.jsonl",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/external-test/mesos-ai-reference-v1/reference-review.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/external-test/mesos-ai-reference-v1/semantic-audit.jsonl",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/external-test/mesos-ai-reference-v1/token-profile.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/assistant-audit-v1/change-inventory.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/assistant-audit-v1/readiness.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/assistant-audit-v1/review-decisions.jsonl",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/assistant-audit-v1/semantic-audit.jsonl",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/epoch1-readiness/readiness.md",
+      "base_sha256": "a55b07a5f9e11b81ebc14e909b6f6025e7ef2c7bb2aa1894be7015a8fb7d8f68",
+      "action": "modify"
+    },
+    {
+      "path": "data/training/xd-assistant-reviewed-v3/grouping-proof.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/xd-assistant-reviewed-v3/preparation-manifest.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/xd-assistant-reviewed-v3/review-export.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/xd-assistant-reviewed-v3/split-report.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/xd-assistant-reviewed-v3/token-profile.json",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/xd-assistant-reviewed-v3/train.jsonl",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "data/training/xd-assistant-reviewed-v3/validation.jsonl",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "docs/external-testing.md",
+      "base_sha256": "a807bbcbad658e2eb554a8eb719d64bfcba5ba692e0d074a99c230f585b85cfb",
+      "action": "modify"
+    },
+    {
+      "path": "docs/slm-training.md",
+      "base_sha256": "252429a5ea2527e4fdd38a3f83f46b7f702aa1d64c67c09687870bab73573cd6",
+      "action": "modify"
+    },
+    {
+      "path": "docs/slm.md",
+      "base_sha256": "d451a0d8ad0c2db3f328629c152084ec0ea9e9450c74109973dc8cf933bfb8ab",
+      "action": "modify"
+    },
+    {
+      "path": "docs/training-handoff.md",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "nabu/cli.py",
+      "base_sha256": "61d738f80f63c6c13644c8cdec65edaceeff4bae7416bbd13064ccccbbd30069",
+      "action": "modify"
+    },
+    {
+      "path": "nabu/label_review.py",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "nabu/slm.py",
+      "base_sha256": "995535671f579c2a804b0943e1e07eba3b189360108ea19a9630e3bb1e6f2c6f",
+      "action": "modify"
+    },
+    {
+      "path": "requirements/slm-mac.lock.txt",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "scripts/check-external-reference.py",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "scripts/check-reviewed-data.py",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "scripts/export-reviewed-slm.py",
+      "base_sha256": "53d5c8ea99506159e52d7e0a1d661f2a73450c4e26547b8999fa9cd7362f2ecd",
+      "action": "modify"
+    },
+    {
+      "path": "scripts/prepare-epoch1.sh",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "scripts/prepare-external-reference.py",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "scripts/prepare-slm-model.py",
+      "base_sha256": "752873a677da854e4324428f58e40d2eb447be2ad8c4a45d583c81c3664dda7c",
+      "action": "modify"
+    },
+    {
+      "path": "scripts/start-epoch1.sh",
+      "base_sha256": "9dc6dbf80dee4001179e005cb729b9abd73035baa2b3f6e2cd96466aa005a335",
+      "action": "modify"
+    },
+    {
+      "path": "scripts/train-slm-mlx.py",
+      "base_sha256": "8c704f524d412b20ea45ba9e93b05382c7a108dbc5498374c21da8cd8a014d66",
+      "action": "modify"
+    },
+    {
+      "path": "tests/test_external_reference.py",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "tests/test_label_review.py",
+      "base_sha256": null,
+      "action": "add"
+    },
+    {
+      "path": "tests/test_slm.py",
+      "base_sha256": "3fba30aa175798e2a6705afeb3785c132974d0c363a75e6a7d73ca6be9609fef",
+      "action": "modify"
+    },
+    {
+      "path": "tests/test_slm_training.py",
+      "base_sha256": "853cc4aa8616d7c99f88db032b806d1d045b8984c14e8a1000912184eb31924a",
+      "action": "modify"
+    },
+    {
+      "path": "tests/test_training_handoff.py",
+      "base_sha256": null,
+      "action": "add"
+    }
+  ],
+  "local_assets_excluded": [
+    ".venv-slm",
+    "data/huggingface",
+    "data/models",
+    "SQL/SQLite",
+    "local-preflight.*",
+    "xd-candidate-work"
+  ]
+}
