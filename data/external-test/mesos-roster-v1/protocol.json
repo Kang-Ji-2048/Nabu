@@ -1,0 +1,60 @@
+{
+  "purpose": "external_project_test_only",
+  "project": "MESOS",
+  "database": "/Users/phoebe/Nabu/data/external-test/mesos-v1.sqlite",
+  "development_trained_through_upper_bound": "2015-04-23T08:11:43.000000Z",
+  "development_label_sha256": "db2e2e2661c2bcd6f669136c8c3516d8fd0678cf0c3620f8391f9d9b6f810aae",
+  "external_ticket_count": 10157,
+  "external_epic_count": 282,
+  "eligible_epics": 226,
+  "sample_cases": 32,
+  "seed": 3407,
+  "roster_sha256": "9ebe6250a67127fa4110b5552eae563431b46baf93c9913cd24b36e0fc9c361b",
+  "overlap_with_development_ids": 0,
+  "selection_policy": "uniform sample of epic identity/time metadata, one day after creation, no selection by outcomes or predicted risks",
+  "held_out_text_or_outcomes_used_for_selection": false,
+  "model_evaluation_started": false,
+  "limitations": [
+    "Selection uses snapshot epic type only as a locator.",
+    "Historical evidence recovery and independently reviewed test reference labels are still required.",
+    "This external test does not replace development validation or repair the XD membership audit.",
+    "Sample is not artificially balanced; absent positive reference risks would make risk recall undefined."
+  ],
+  "etl_report": "/Users/phoebe/Nabu/data/reports/mesos-external-test-v1.json",
+  "etl_rejected_records": 0,
+  "mapping_review_required": {
+    "unmapped_statuses": {
+      "Accepted": 825,
+      "Reviewable": 177
+    },
+    "unmapped_types": {
+      "Documentation": 311,
+      "Wish": 84
+    },
+    "unmapped_links": {
+      "requires": 32,
+      "supercedes": 83,
+      "Blocked": 18,
+      "fixes": 4,
+      "is fixed by": 4,
+      "Is contained by": 46,
+      "is part of": 60,
+      "depends upon": 126,
+      "contains": 46,
+      "incorporates": 60,
+      "is depended upon by": 126,
+      "is caused by": 24,
+      "is superceded by": 83,
+      "is required by": 32,
+      "causes": 24,
+      "is a clone of": 51,
+      "is cloned by": 51,
+      "breaks": 27,
+      "is broken by": 27,
+      "is a parent of": 2,
+      "is a child of": 2,
+      "Parent Feature": 2,
+      "Dependent": 2
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "status": "complete_generated_unreviewed",
+  "human_approved": false,
+  "training_started": false,
+  "dataset_version": "xd-development-v2",
+  "label_version": "xd-label-review-v2",
+  "created_at": "2026-10-14T19:48:10.313785+00:00",
+  "preparation_safe": true,
+  "preparation_manifest_path": "/Users/phoebe/Nabu/data/training/xd-development-v2/preparation-manifest.json",
+  "counts": {
+    "train": {
+      "examples": 58,
+      "risk_examples": 3,
+      "no_risk_examples": 55
+    },
+    "validation": {
+      "examples": 2,
+      "risk_examples": 0,
+      "no_risk_examples": 2
+    }
+  },
+  "risk_ids": [
+    "XD-1260",
+    "XD-1317",
+    "XD-1605"
+  ],
+  "risk_rejections": [
+    "XD-1821"
+  ],
+  "input_exact_matches": 2,
+  "coverage_only_changes": 41,
+  "changed_supplied_evidence": 17,
+  "max_tokens": 6547,
+  "over_8192": [],
+  "all_schema_citations_valid": true,
+  "all_manifest_input_hashes_match": true,
+  "excluded_evidence_intersections": [],
+  "held_out_ticket_count": 742,
+  "held_out_text_or_outcomes_reviewed": false,
+  "held_out_plans_reconstructed": false,
+  "label_proposal_sha256": {
+    "relabel-proposals-unchanged-evidence.jsonl": "590f80443f0d0bf063dd4f08556e0a1e497b9c39fa32c225e19805562dd672ca",
+    "relabel-proposals-batch-1.jsonl": "ccabceab6c5b4792bb98a86ad7b172b444fff7850bb6f1970a74806678c2e7f4",
+    "relabel-proposals-batch-2.jsonl": "c88ee10dc7e68e0106c1b1df707c6a946e5e6415ca461b180deb47ebdae8b3e9"
+  },
+  "limitations": [
+    "Every target requires human review; generated labels do not establish semantic correctness.",
+    "Validation has two no-risk examples and zero positive risks; validation loss cannot establish detector recall or calibrate confidence.",
+    "Missing XD-3272 identity has been proven outside the imported/raw source universe under the explicit recorded policy; its scope remains unavailable.",
+    "Remaining machine positives are sparse and conditional; company-specific impact/severity remains unverified."
+  ],
+  "files": {
+    "generated-labels.jsonl": "c44596007436eab75b80b0f9a78a207e0caec86ca034e9b79c6dd1997c6a79c8",
+    "train.jsonl": "8eebcfe11b8a6ede274b004a5b8a2d736415e42d15ae0900b31ea8344d03bc0f",
+    "validation.jsonl": "b78989db005eb93fe33cadbcc5cc6360afb24fee8bd979413a3869974a73aed6",
+    "semantic-review.jsonl": "c7466aab3f37443a7811a9a49cac860ea41a3b94c19620d2d186b1ddbcd3c89b",
+    "preparation-manifest.json": "19cf968f2d872503d81fb71f887acfb190651f50bed7c8e59d6c0b83ab677f75",
+    "token-profile.json": "8d36c242b3b6e6d95136b7e7cd314e4c317e7dcb640e5ea6c8b5eeb592c7d288"
+  }
+}

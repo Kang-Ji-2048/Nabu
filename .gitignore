@@ -6,3 +6,30 @@ __pycache__/
 *.egg-info/
 
 .venv-slm/
+
+# Downloaded/runtime assets; keep versioned review and readiness artifacts.
+/data/huggingface/
+/data/models/
+/data/raw/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.gguf
+*.safetensors
+/data/source/*.sql
+/data/source/*.zip
+/data/source/*.partial
+/data/source/figshare-metadata.json
+/data/slm-environment.lock.txt
+
+# Superseded working runs and locally reconstructed XD holdout inputs.
+/data/training/ticket-timeline/
+/data/training/xd-80-20/
+/data/training/xd-training-readiness-v1/
+/data/training/xd-ticket-80-20/test-drafts.jsonl
+/data/training/xd-ticket-80-20/test-ticket-ids.jsonl
+/data/training/xd-ticket-80-20/review-queue.md
+/data/training/xd-ticket-80-20/token-profile.json
+/data/training/xd-label-review/generation.log
+/data/training/xd-label-review/review-notes.md
+/data/training/xd-label-review/validation-summary.json

@@ -1,0 +1,73 @@
+{
+  "run_id": "0adb7cc1-0e99-42fd-b1c0-dd61a0615cbb",
+  "source": "tawos-v1.1",
+  "sha256": "55270711733bf25ec5d436959f5f46ab4ef25ebfa78686af71f70c3d82e810be",
+  "raw": {
+    "Affected_Version": 3416,
+    "Change_Log": 108349,
+    "Comment": 30152,
+    "Component": 42,
+    "Fix_Version": 5799,
+    "Issue": 10157,
+    "Issue_Component": 7043,
+    "Issue_Link": 6342,
+    "Project": 1,
+    "Sprint": 227,
+    "Version": 87
+  },
+  "loaded": {
+    "Project": 1,
+    "Issue": 10157,
+    "Change_Log": 108349,
+    "Issue_Link": 6342
+  },
+  "rejected": 0,
+  "unmapped_statuses": {
+    "Accepted": 825,
+    "Reviewable": 177
+  },
+  "unmapped_types": {
+    "Documentation": 311,
+    "Wish": 84
+  },
+  "unmapped_links": {
+    "requires": 32,
+    "supercedes": 83,
+    "Blocked": 18,
+    "fixes": 4,
+    "is fixed by": 4,
+    "Is contained by": 46,
+    "is part of": 60,
+    "depends upon": 126,
+    "contains": 46,
+    "incorporates": 60,
+    "is depended upon by": 126,
+    "is caused by": 24,
+    "is superceded by": 83,
+    "is required by": 32,
+    "causes": 24,
+    "is a clone of": 51,
+    "is cloned by": 51,
+    "breaks": 27,
+    "is broken by": 27,
+    "is a parent of": 2,
+    "is a child of": 2,
+    "Parent Feature": 2,
+    "Dependent": 2
+  },
+  "external_links": 0,
+  "snapshot_only": true,
+  "work_categories": {
+    "unassigned": 4329,
+    "documentation": 539,
+    "deployment": 944,
+    "security": 664,
+    "testing": 2126,
+    "integration": 834,
+    "interface": 180,
+    "performance": 421,
+    "data": 120
+  },
+  "classifier_version": "work-topics-v1",
+  "status": "completed"
+}

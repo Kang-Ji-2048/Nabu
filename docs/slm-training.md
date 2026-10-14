@@ -24,7 +24,7 @@ Training requires nonempty reviewed training and validation partitions. The scri
 .venv-slm/bin/python scripts/train-slm-mlx.py --checkpoint Qwen/Qwen3-8B --dataset data/training/examples --model-dir data/models/qwen3-8b-mlx-4bit --output data/training/run-1
 ```
 
-Defaults: 4-bit base, rank 16, batch 1, accumulation 8, learning rate 1e-4, one epoch, 8192-token context, prompt masking, gradient checkpointing, seed 3407. Iterations are rounded to a complete gradient accumulation group. The script records dependency versions and dataset hash. It requires `nabu-base.json` beside the converted model with `checkpoint` set to the exact base ID. A successful adapter run does not issue a production manifest.
+Defaults: 4-bit base, rank 16, batch 1, accumulation 8, learning rate 1e-4, one epoch, 8192-token context, prompt masking, gradient checkpointing, seed 3407. Accumulation uses a divisor of the sample-iteration count, so one epoch visits each approved example once and applies the final gradients without padding the run with repeated examples. The script records dependency versions and dataset hash. It requires `nabu-base.json` beside the converted model with `checkpoint` set to the exact base ID. A successful adapter run does not issue a production manifest.
 
 Use MLX's conversion tool to create the 4-bit local base from the exact checkpoint. Record the source revision in `nabu-base.json`.
 
@@ -86,3 +86,9 @@ For a separately chosen local-model drafting run, the existing resumable generat
 This requires an already prepared local base model and uses GPU inference to draft labels for training and validation only. It validates the Detection schema, allowed risk types and exact historical citations, and writes `generated-labels.jsonl` plus a readable `review.md` with local-model provenance. Machine labels remain `generated_unreviewed`. Citation checks do not establish whether a warning is useful. Failed labels are logged and omitted rather than converted to no-risk targets. Successful labels are checkpointed individually, so the command can resume. Use a separate output directory from CPU-packaged assistant candidates.
 
 After review, put approved/revised targets into the original case specifications with a named reviewer and rebuild the dataset using the recorded time boundaries. Training refuses unreviewed labels by default and refuses a dataset containing only risk or only no-risk targets. An explicit `--allow-generated-labels` option exists solely for user-authorized experiments; it records unreviewed provenance and does not issue a production manifest. The selected workflow requires human review before training.
+
+An additional project can be reserved for external testing without changing the XD development split. See [external-testing.md](external-testing.md) for the Mesos import, fixed roster and independently reviewed test-reference protocol.
+
+## Epoch-one launch
+
+The current ready-for-review version is `data/training/xd-label-review-v2` (58 train, 2 validation). Actual training requires `--preparation-manifest` as well as human-approved labels. `--preflight-only` can inspect unreviewed candidates without approving them. Use `scripts/export-reviewed-slm.py` to export explicit named-human decisions, then `scripts/start-epoch1.sh APPROVED_DATASET NEW_RUN_DIRECTORY`. The latter repeats preflight before starting exactly one sample pass. Local runtime evidence and decision template are in `data/training/epoch1-readiness`. Validation contains no positive cases and cannot estimate recall.

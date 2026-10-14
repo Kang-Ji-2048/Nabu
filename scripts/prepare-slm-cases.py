@@ -7,10 +7,12 @@ import argparse
 from collections import defaultdict
 from contextlib import closing
 from datetime import datetime, timedelta
+import hashlib
 import json
 import math
 import os
 from pathlib import Path
+import re
 import shutil
 import sqlite3
 import sys
@@ -86,10 +88,57 @@ def conservative_groups(db, epics):
     return groups, unresolved, ambiguities, quarantined_child_ids
 
 
-def prepare_cases(database, output, risk_types, *, development_only=False):
+def verified_absent_reference(db, parent_id, label, jira):
+    """Prove a stable reference is outside the imported identity universe.
+
+    This opt-in policy is deliberately narrower than unresolved membership:
+    label-only references, incomplete identity coverage and inconsistent aliases
+    still fail closed. Read identity metadata only, never ticket text/outcomes.
+    """
+    canonical_jira = lambda value: value is not None and re.fullmatch(r'[1-9][0-9]*', str(value)) is not None
+    if not isinstance(label, str) or not label.strip() or label != label.strip() or not canonical_jira(jira):
+        return None
+    source = db.execute('SELECT source FROM work_item WHERE id=?', (parent_id,)).fetchone()[0]
+    identities = db.execute("""SELECT w.id,w.source_key,r.source_id,
+            json_extract(r.payload,'$.Issue_Key'),json_extract(r.payload,'$.Jira_ID')
+            FROM work_item w LEFT JOIN raw_record r
+            ON r.source=w.source AND r.table_name='Issue'
+            AND r.source_id=substr(w.id,length(w.source)+2)
+            WHERE w.source=?""", (source,)).fetchall()
+    if not identities or any(raw_id is None or not isinstance(key, str) or not key.strip() or key != raw_key or
+                             not canonical_jira(known_jira)
+                             for _, key, raw_id, raw_key, known_jira in identities):
+        return None
+    keys = [row[1] for row in identities]
+    jiras = [str(row[4]) for row in identities]
+    if len(set(keys)) != len(keys) or len(set(jiras)) != len(jiras):
+        return None
+    # Include raw-only/rejected Issue records when checking absence; a known
+    # but unimported endpoint requires remediation, not an absence claim.
+    raw_match = db.execute("""SELECT count(*) FROM raw_record
+            WHERE source=? AND table_name='Issue' AND
+            (json_extract(payload,'$.Issue_Key')=? OR
+             cast(json_extract(payload,'$.Jira_ID') AS TEXT)=?)""",
+            (source, label, str(jira))).fetchone()[0]
+    if label in keys or str(jira) in jiras or raw_match:
+        return None
+    return {'parent_item_id': parent_id, 'label': label, 'jira_id': str(jira),
+            'source': source, 'imported_identity_count': len(identities),
+            'complete_issue_identity_coverage': True, 'unique_keys_and_jira_ids': True,
+            'identity_metadata_sha256': hashlib.sha256(json.dumps(sorted(identities), ensure_ascii=False).encode('utf-8')).hexdigest(),
+            'matching_imported_or_raw_issue_identities': 0,
+            'disposition': 'outside_imported_identity_universe',
+            'limitation': 'Referenced child is absent from the imported source; its text, scope and outcomes are unavailable. No membership was invented.'}
+
+
+def prepare_cases(database, output, risk_types, *, development_only=False, absent_reference_policy='strict'):
     database, output = Path(database), Path(output)
     if output.exists():
         raise ValueError("Choose a new output directory")
+    if absent_reference_policy not in ('strict', 'exclude-unimported'):
+        raise ValueError('Unknown absent-reference policy')
+    if absent_reference_policy != 'strict' and not development_only:
+        raise ValueError('Absent-reference policy is only available for development-only preparation')
     with closing(sqlite3.connect(database.resolve().as_uri() + '?mode=ro', uri=True)) as db:
         db.execute('BEGIN')
         tickets = db.execute("SELECT id, source_key, created_at FROM work_item ORDER BY created_at, source_key").fetchall()
@@ -108,6 +157,15 @@ def prepare_cases(database, output, risk_types, *, development_only=False):
             locators.append({'item_id': iid, 'id': epic, 'epic': epic, 'group': epic,
                              'as_of': cutoff, 'split': split})
         metadata_groups, unresolved, ambiguities, quarantined_child_ids = conservative_groups(db, locators) if development_only else ({}, {}, [], set())
+        absent_references = []
+        if development_only and absent_reference_policy == 'exclude-unimported':
+            for locator in locators:
+                if locator['split'] != 'test':
+                    continue
+                for label, jira in sorted(unresolved.get(locator['item_id'], []), key=str):
+                    proof = verified_absent_reference(db, locator['item_id'], label, jira)
+                    if proof is not None:
+                        absent_references.append(proof)
     locators.sort(key=lambda row: (row['as_of'], row['id']))
     initial_counts = {split: sum(row['split'] == split for row in locators) for split in ('train', 'validation', 'test')}
     if not initial_counts['train'] or not initial_counts['validation']:
@@ -117,7 +175,10 @@ def prepare_cases(database, output, risk_types, *, development_only=False):
     held_out_evidence_ids = set()
     excluded_evidence_ids = set()
     if development_only:
-        unsafe = sorted(row['id'] for row in locators if row['split'] == 'test' and unresolved.get(row['item_id']))
+        proven_absent = {(row['parent_item_id'], row['label'], row['jira_id']) for row in absent_references}
+        unsafe = sorted(row['id'] for row in locators if row['split'] == 'test' and
+                        any((row['item_id'], label, str(jira)) not in proven_absent
+                            for label, jira in unresolved.get(row['item_id'], [])))
         if unsafe:
             raise ValueError(f'Unresolved held-out Epic Child references for {", ".join(unsafe)}; no files were published')
         for row in locators:
@@ -146,6 +207,11 @@ def prepare_cases(database, output, risk_types, *, development_only=False):
             frozen = freeze_evidence(database, locator['epic'], locator['as_of'], exclude_evidence_ids=excluded_evidence_ids)
         else:
             frozen = freeze_evidence(database, locator['epic'], locator['as_of'])
+        if development_only:
+            supplied_ids = {item['id'] for item in [frozen['plan']['root'], *frozen['plan']['members']]}
+            supplied_ids.update(frozen['corpus'])
+            if supplied_ids & excluded_evidence_ids:
+                raise ValueError('Excluded evidence reached a development plan/corpus; no files were published')
         row = {key: value for key, value in locator.items() if key != 'item_id'}
         row.update({'as_of': frozen['plan']['as_of'], 'input': detector_input(frozen, risk_types, 12),
                     'evidence_fingerprint': frozen['evidence_fingerprint'], 'review_status': 'draft'})
@@ -182,6 +248,8 @@ def prepare_cases(database, output, risk_types, *, development_only=False):
               'quarantined_child_ids': sorted(quarantined_child_ids),
               'evidence_ids_excluded': len(excluded_evidence_ids),
               'membership_ambiguities': ambiguities,
+              'absent_reference_policy': absent_reference_policy,
+              'verified_absent_held_out_references': absent_references,
               'group_check': 'conservative_all_time_membership_reference_metadata' if development_only else 'supplied_historical_plan_membership',
               'limitations': ['Current epic type is used only to select dataset locators; historical model fields are reconstructed independently.',
                               'A one-day review window may have little recoverable scope; inspect drafts before labelling.',
@@ -190,6 +258,8 @@ def prepare_cases(database, output, risk_types, *, development_only=False):
     if development_only:
         report['limitations'].append('Held-out cutoff plans are not reconstructed or emitted. Their roots and all-time observed members are withheld from development prior evidence, including prior scope reconstruction containing those references. HistoricalReader still loads underlying source records internally for historical reconstruction. Cross-partition exclusion uses membership reference metadata and can conservatively exclude memberships absent at a review cutoff.')
         report['limitations'].append('Conflicting membership identities contribute every resolvable candidate to group checks. Unresolved held-out parent references stop preparation before reconstruction. Children with unresolved Epic Links are quarantined from development plans and evidence without assigning them a held-out partition.')
+        if absent_references:
+            report['limitations'].append('Explicit exclude-unimported policy: listed held-out child references have both key and stable Jira ID absent from the imported/raw source identity metadata, with complete unique imported identity coverage. Missing children cannot be supplied development items, but their scope is unknown. Label-only or incompletely identified references still stop preparation; all unresolved child links remain quarantined.')
     # Publish the complete directory only after successful reconstruction/checks.
     output.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=f'.{output.name}-', dir=output.parent))
@@ -205,6 +275,30 @@ def prepare_cases(database, output, risk_types, *, development_only=False):
             (staging / f'{split}-drafts.jsonl').write_text(''.join(json.dumps(row, ensure_ascii=False) + '\n' for row in selected), encoding='utf-8')
         (staging / 'case-specs.jsonl').write_text(''.join(json.dumps({k: row[k] for k in ('id', 'epic', 'group', 'as_of')}) + '\n' for row in retained), encoding='utf-8')
         (staging / 'split-report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+        if development_only:
+            # This gate certifies partition/evidence preparation only. Approval
+            # and target checks remain independent requirements in the launcher.
+            grouping_proof = {'groups': {iid: sorted(ids) for iid, ids in sorted(metadata_groups.items())},
+                              'unresolved': {iid: sorted(refs, key=str) for iid, refs in sorted(unresolved.items())},
+                              'ambiguities': ambiguities, 'quarantined_child_ids': sorted(quarantined_child_ids)}
+            grouping_bytes = json.dumps(grouping_proof, sort_keys=True, ensure_ascii=False).encode('utf-8')
+            (staging / 'grouping-proof.json').write_bytes(grouping_bytes + b'\n')
+            manifest = {'version': 'nabu-training-preparation-v1', 'ready_for_training': True,
+                        'readiness_scope': 'partition_and_evidence_safety_only',
+                        'human_approved': False, 'label_approval_required': True,
+                        'dataset_version': output.name, 'source_database': str(database.resolve()),
+                        'grouping_policy': report['group_check'], 'absent_reference_policy': absent_reference_policy,
+                        'grouping_proof_sha256': hashlib.sha256((staging / 'grouping-proof.json').read_bytes()).hexdigest(),
+                        'split_report_sha256': hashlib.sha256((staging / 'split-report.json').read_bytes()).hexdigest(),
+                        'verified_absent_held_out_references': absent_references,
+                        'excluded_evidence_ids': sorted(excluded_evidence_ids),
+                        'held_out_evidence_ids': sorted(held_out_evidence_ids),
+                        'quarantined_child_ids': sorted(quarantined_child_ids),
+                        'train_before': train_before, 'eval_before': eval_before,
+                        'held_out_ticket_count': len(tickets) - ticket_boundary,
+                        'held_out_cutoff_plans_reconstructed': False,
+                        'inputs': {row['id']: hashlib.sha256(json.dumps(row['input'], sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest() for row in retained}}
+            (staging / 'preparation-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
         # Never replace a directory created concurrently by another run.
         if output.exists():
             raise ValueError('Output directory appeared during preparation; no files were replaced')
@@ -221,8 +315,9 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--risk-types', nargs='+', required=True)
     parser.add_argument('--development-only', action='store_true', help='Reconstruct and emit only train/validation; group checks use membership reference metadata without reconstructing held-out plans')
+    parser.add_argument('--absent-reference-policy', choices=('strict', 'exclude-unimported'), default='strict', help='Explicit closed-source policy: permit only held-out child references proven absent by key and stable Jira ID under complete unique imported identity coverage; default remains strict')
     args = parser.parse_args()
-    print(json.dumps(prepare_cases(args.database, args.output, args.risk_types, development_only=args.development_only), indent=2))
+    print(json.dumps(prepare_cases(args.database, args.output, args.risk_types, development_only=args.development_only, absent_reference_policy=args.absent_reference_policy), indent=2))
 
 
 if __name__ == '__main__':

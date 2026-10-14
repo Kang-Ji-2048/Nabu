@@ -33,7 +33,7 @@ class DevelopmentCaseTests(unittest.TestCase):
                            (f'tawos:{number}', f'XD-{number}', f'2014-01-{number:02d}T00:00:00.000000Z', 'epic', 'xd', 'tawos'))
                 # Extract only Jira_ID; payload text must not reach frozen inputs.
                 db.execute('INSERT INTO raw_record VALUES (?,?,?,?)',
-                           ('tawos', str(number), 'Issue', json.dumps({'Jira_ID': 500 + number, 'Title': 'DO_NOT_READ_HELD_OUT_TEXT'})))
+                           ('tawos', str(number), 'Issue', json.dumps({'Jira_ID': 500 + number, 'Issue_Key': f'XD-{number}', 'Title': 'DO_NOT_READ_HELD_OUT_TEXT'})))
         self.output = self.root / 'drafts'
 
     @staticmethod
@@ -75,6 +75,12 @@ class DevelopmentCaseTests(unittest.TestCase):
         self.assertTrue(all(row['review_status'] == 'draft' and 'target' not in row for row in train + validation))
         self.assertEqual({row['split'] for row in validation}, {'validation'})
         self.assertNotIn('DO_NOT_READ_HELD_OUT_TEXT', ''.join(path.read_text() for path in self.output.iterdir()))
+        manifest = json.loads((self.output / 'preparation-manifest.json').read_text())
+        self.assertTrue(manifest['ready_for_training'])
+        self.assertFalse(manifest['human_approved'])
+        self.assertEqual(manifest['version'], 'nabu-training-preparation-v1')
+        self.assertEqual(len(manifest['inputs']), 15)
+        self.assertTrue(set(manifest['held_out_evidence_ids']) <= set(manifest['excluded_evidence_ids']))
 
     def test_metadata_overlap_excludes_shared_train_validation_and_test_ids(self):
         with closing(sqlite3.connect(self.database)) as db, db:
@@ -169,12 +175,80 @@ class DevelopmentCaseTests(unittest.TestCase):
         self.assertTrue(all(row['input']['plan']['root']['id'] != 'tawos:1' for row in drafts))
         self.assertEqual(self.database.read_bytes(), original_database)
 
+    def test_explicit_absent_identity_policy_preserves_holdout_and_child_quarantine(self):
+        with closing(sqlite3.connect(self.database)) as db, db:
+            db.execute('INSERT INTO event VALUES (?,?,?,?,?,?)',
+                       ('tawos:18', 'Epic Child', None, 'XD-MISSING', None, '9999'))
+            db.execute('INSERT INTO event VALUES (?,?,?,?,?,?)',
+                       ('tawos:1', 'Epic Link', None, 'XD-MISSING', None, '9999'))
+        original = self.database.read_bytes()
+        with patch.object(cases, 'freeze_evidence', side_effect=self.freeze) as freeze:
+            report = cases.prepare_cases(self.database, self.output, ['scope_gap'], development_only=True,
+                                         absent_reference_policy='exclude-unimported')
+        self.assertEqual(report['counts'], {'train': 12, 'validation': 2})
+        proof = report['verified_absent_held_out_references'][0]
+        self.assertEqual(proof['label'], 'XD-MISSING')
+        self.assertEqual(proof['jira_id'], '9999')
+        self.assertEqual(proof['imported_identity_count'], 20)
+        self.assertEqual(report['quarantined_child_ids'], ['tawos:1'])
+        self.assertTrue(all({'tawos:1', 'tawos:18'} <= call.kwargs['exclude_evidence_ids'] for call in freeze.call_args_list))
+        self.assertTrue(all(int(call.args[1].split('-')[1]) < 16 for call in freeze.call_args_list))
+        self.assertFalse((self.output / 'test-drafts.jsonl').exists())
+        self.assertEqual(self.database.read_bytes(), original)
+        self.assertNotIn('DO_NOT_READ_HELD_OUT_TEXT', ''.join(path.read_text() for path in self.output.iterdir()))
+
+    def test_absent_identity_policy_fails_closed_on_incomplete_or_ambiguous_metadata(self):
+        mutations = [
+            "DELETE FROM raw_record WHERE source_id='2'",
+            "UPDATE raw_record SET payload=json_set(payload,'$.Jira_ID',NULL) WHERE source_id='2'",
+            "UPDATE raw_record SET payload=json_set(payload,'$.Jira_ID',501) WHERE source_id='2'",
+            "UPDATE raw_record SET payload=json_set(payload,'$.Issue_Key','XD-RENAMED') WHERE source_id='2'",
+        ]
+        original = self.database.read_bytes()
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                self.database.write_bytes(original)
+                with closing(sqlite3.connect(self.database)) as db, db:
+                    db.execute(mutation)
+                    db.execute('INSERT INTO event VALUES (?,?,?,?,?,?)',
+                               ('tawos:18', 'Epic Child', None, 'XD-MISSING', None, '9999'))
+                with patch.object(cases, 'freeze_evidence') as freeze:
+                    with self.assertRaisesRegex(ValueError, 'Unresolved held-out'):
+                        cases.prepare_cases(self.database, self.output, ['scope_gap'], development_only=True,
+                                            absent_reference_policy='exclude-unimported')
+                freeze.assert_not_called()
+                self.assertFalse(self.output.exists())
+
+    def test_absence_proof_rejects_label_only_and_raw_only_known_reference(self):
+        with closing(sqlite3.connect(self.database)) as db, db:
+            self.assertIsNone(cases.verified_absent_reference(db, 'tawos:18', 'XD-MISSING', None))
+            self.assertIsNone(cases.verified_absent_reference(db, 'tawos:18', None, '9999'))
+            self.assertIsNone(cases.verified_absent_reference(db, 'tawos:18', 'XD-MISSING', '0518'))
+            self.assertIsNone(cases.verified_absent_reference(db, 'tawos:18', 'XD-MISSING', '²'))
+            db.execute('INSERT INTO raw_record VALUES (?,?,?,?)',
+                       ('tawos', '99', 'Issue', json.dumps({'Issue_Key':'XD-MISSING', 'Jira_ID':9999})))
+            self.assertIsNone(cases.verified_absent_reference(db, 'tawos:18', 'XD-MISSING', '9999'))
+
+    def test_absent_reference_policy_cannot_enable_all_split_preparation(self):
+        with patch.object(cases, 'freeze_evidence') as freeze:
+            with self.assertRaisesRegex(ValueError, 'only available for development-only'):
+                cases.prepare_cases(self.database, self.output, ['scope_gap'], absent_reference_policy='exclude-unimported')
+        freeze.assert_not_called()
+
     def test_failed_reconstruction_publishes_nothing(self):
         with patch.object(cases, 'freeze_evidence', side_effect=ValueError('invalid historical input')):
             with self.assertRaisesRegex(ValueError, 'invalid historical input'):
                 cases.prepare_cases(self.database, self.output, ['scope_gap'], development_only=True)
         self.assertFalse(self.output.exists())
         self.assertEqual(list(self.root.glob('.drafts-*')), [])
+
+    def test_exclusion_guard_refuses_a_freezer_that_leaks_held_out_ids(self):
+        def leaking_freeze(database, epic, cutoff, *, exclude_evidence_ids=()):
+            return self.freeze(database, epic, cutoff, exclude_evidence_ids=())
+        with patch.object(cases, 'freeze_evidence', side_effect=leaking_freeze):
+            with self.assertRaisesRegex(ValueError, 'Excluded evidence reached'):
+                cases.prepare_cases(self.database, self.output, ['scope_gap'], development_only=True)
+        self.assertFalse(self.output.exists())
 
     def test_existing_outputs_are_not_replaced(self):
         self.output.mkdir()

@@ -1,0 +1,40 @@
+{
+  "status": "synthetic_calibration_passed",
+  "device": "Device(gpu, 0)",
+  "model_provenance": {
+    "checkpoint": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "bits": 4
+  },
+  "ticket_labels_used": false,
+  "trained_artifact_persisted": false,
+  "synthetic_adapter_discarded": true,
+  "adapter_checkpoint_roundtrip": "passed",
+  "trainable_adapter_tensors": 504,
+  "settings": {
+    "rank": 16,
+    "batch_size": 1,
+    "gradient_checkpointing": true,
+    "learning_rate": 0.0001
+  },
+  "steps": [
+    {
+      "sequence_length": 512,
+      "elapsed_seconds": 20.302,
+      "synthetic_loss": 12.1572265625,
+      "assistant_like_target_tokens": 64,
+      "peak_memory_gb": 6.211
+    },
+    {
+      "sequence_length": 6667,
+      "elapsed_seconds": 261.561,
+      "synthetic_loss": 11.61328125,
+      "assistant_like_target_tokens": 64,
+      "peak_memory_gb": 20.256
+    }
+  ],
+  "limitations": [
+    "Synthetic calibration checks computation/memory and serialization, not risk-model quality.",
+    "Full-epoch timing depends on approved examples and validation overhead."
+  ]
+}

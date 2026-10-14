@@ -1,0 +1,4 @@
+{"status": "synthetic_calibration", "sequence_length": 512}
+{"sequence_length": 512, "elapsed_seconds": 20.302, "synthetic_loss": 12.1572265625, "assistant_like_target_tokens": 64, "peak_memory_gb": 6.211}
+{"status": "synthetic_calibration", "sequence_length": 6667}
+{"sequence_length": 6667, "elapsed_seconds": 261.561, "synthetic_loss": 11.61328125, "assistant_like_target_tokens": 64, "peak_memory_gb": 20.256}

@@ -1,0 +1,36 @@
+{
+  "status": "prepared_awaiting_human_review",
+  "training_started": false,
+  "checkpoint": "Qwen/Qwen3-8B",
+  "dataset_version": "xd-development-v2",
+  "training_examples": 58,
+  "validation_examples": 2,
+  "training_positive_examples": 3,
+  "max_sequence_tokens": 6547,
+  "context_budget": 8192,
+  "requested_epochs": 1,
+  "sample_iterations_if_all_approved": 58,
+  "actual_accumulation_if_all_approved": 2,
+  "gpu_calibration": "synthetic_calibration_passed",
+  "gpu_peak_memory_gb": 20.256,
+  "adapter_checkpoint_roundtrip": "passed",
+  "candidate_package": "/Users/phoebe/Nabu/data/training/xd-label-review-v2",
+  "preparation_manifest": "/Users/phoebe/Nabu/data/training/xd-development-v2/preparation-manifest.json",
+  "limitations": [
+    "Validation has no positive risks and cannot measure recall.",
+    "No positive scope_gap target exists.",
+    "This is a small first-epoch experiment, not a validated production detector."
+  ],
+  "regression_tests_passed": 107,
+  "launcher_syntax_check": "passed",
+  "candidate_preflight": {
+    "train": 58,
+    "validation": 2,
+    "max_tokens": 6547,
+    "label_review_complete": false,
+    "preparation_audit_ready": true,
+    "iterations": 58,
+    "gradient_accumulation": 2,
+    "validation_positive_examples": 0
+  }
+}
