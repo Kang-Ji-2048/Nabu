@@ -49,3 +49,5 @@ LangGraph now runs a tool-driven gap investigator, citation validator and critic
 ## Work categories and semantic retrieval
 
 Local ticket embeddings and HDBSCAN discover proposed work categories without a fixed category count. The investigator can use semantic retrieval against its frozen historical evidence. See [docs/categories.md](docs/categories.md) for model preparation, discovery, search and refresh commands.
+
+Local model training and chronological dataset preparation are described in [docs/slm-training.md](docs/slm-training.md).

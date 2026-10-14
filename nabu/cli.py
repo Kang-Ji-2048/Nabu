@@ -77,9 +77,32 @@ def main(argv=None):
     ingest.add_argument("--database", type=Path, default=Path("data/nabu.sqlite"))
     ingest.add_argument("--mappings", type=Path)
     ingest.add_argument("--report", type=Path)
+    dataset = commands.add_parser("build-slm-dataset", help="Build frozen examples and reviewed SFT partitions")
+    dataset.add_argument("--database", type=Path, required=True)
+    dataset.add_argument("--cases", type=Path, required=True)
+    dataset.add_argument("--output", type=Path, required=True)
+    dataset.add_argument("--train-before", required=True)
+    dataset.add_argument("--eval-before", required=True)
+    dataset.add_argument("--limit", type=int, default=12)
+    baseline = commands.add_parser("evaluate-slm-baseline", help="Evaluate an explicitly untrained Ollama baseline")
+    baseline.add_argument("--dataset", type=Path, required=True)
+    baseline.add_argument("--output", type=Path, required=True)
+    baseline.add_argument("--model", required=True, help="Exact Ollama model name")
+    baseline.add_argument("--slm-endpoint", default="http://127.0.0.1:11434/v1")
+    baseline.add_argument("--max-input-bytes", type=int, default=24000)
+    baseline.add_argument("--max-tokens", type=int, default=4096)
+    dataset.add_argument("--risk-types", nargs="+", required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == "extract":
+        if args.command == "build-slm-dataset":
+            from .slm import build_dataset
+            result = build_dataset(args.database, args.cases, args.output, train_before=args.train_before,
+                                   eval_before=args.eval_before, risk_types=args.risk_types, limit=args.limit)
+        elif args.command == "evaluate-slm-baseline":
+            from .slm import evaluate_baseline
+            result = evaluate_baseline(args.dataset, args.output, model=args.model, endpoint=args.slm_endpoint,
+                                       max_input_bytes=args.max_input_bytes, max_tokens=args.max_tokens)
+        elif args.command == "extract":
             result = export_mysql(args.project, args.output)
         elif args.command == "extract-dump":
             result = export_dump(args.input, args.project, args.output)

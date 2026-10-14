@@ -20,8 +20,8 @@ alongside structured JSON. The evidence supplied to the SLM includes counterexam
 candidates, not only historically completed work. It is a lexical sample, not a
 complete review of every eligible ticket.
 
-**Dataset labelling and SLM training are deliberately left to the model-training
-owner.** No trained risk model is bundled or claimed to exist. Live detection and
+The local dataset builder and Apple Silicon training script are documented in
+[slm-training.md](slm-training.md). Human-reviewed risk targets are required. No trained risk model is bundled or claimed to exist. Live detection and
 report quality have not been evaluated. Offline mode tests wiring only.
 
 ## Try without model services
