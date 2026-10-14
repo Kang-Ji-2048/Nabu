@@ -1,0 +1,9 @@
+{
+  "version": "nabu-slm-v1",
+  "model": "nabu-risk-slm",
+  "trained": false,
+  "trained_through": "2013-06-16T23:59:59Z",
+  "training_data_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "risk_types": ["scope_gap", "dependency", "estimation"]
+}

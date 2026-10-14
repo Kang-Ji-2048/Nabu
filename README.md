@@ -1,5 +1,17 @@
 # Nabu: Delivery Risk Reviewer
 
+## SLM-to-Claude architecture
+
+The new flow is **ingest → normalise and classify → SQLite → local SLM risk
+detection → citation validation → Claude reporting → Markdown/JSON review**.
+Run it with `python -m nabu assess`; `review` remains the legacy investigator
+baseline. See [the architecture overview](docs/architecture.md) and
+[the SLM setup and training handoff](docs/slm.md).
+
+The integration is implemented, but dataset labelling and SLM training are left
+to the model-training owner. Live assessment requires their trained model and
+provenance manifest. Offline mode is a wiring test, not a risk assessment.
+
 Nabu reads a team's ticket history from any tracker and warns them, before work starts, where a new plan is likely to go wrong.
 
 - **In:** past tickets from Jira, Linear, GitHub Issues or Azure DevOps, normalised into one schema, plus a new epic or sprint plan.

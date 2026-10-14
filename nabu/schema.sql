@@ -25,6 +25,10 @@ CREATE TABLE IF NOT EXISTS work_item (
     snapshot_only INTEGER NOT NULL DEFAULT 1 CHECK (snapshot_only = 1)
 );
 CREATE INDEX IF NOT EXISTS work_item_project ON work_item(project_id);
+CREATE TABLE IF NOT EXISTS work_classification (
+    item_id TEXT PRIMARY KEY REFERENCES work_item(id) ON DELETE CASCADE,
+    category TEXT NOT NULL, classifier_version TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS event (
     id TEXT PRIMARY KEY, item_id TEXT NOT NULL REFERENCES work_item(id),
     at TEXT NOT NULL, kind TEXT NOT NULL, field TEXT NOT NULL,

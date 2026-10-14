@@ -10,6 +10,7 @@ import sqlite3
 from uuid import uuid4
 
 from .extract import QUERIES
+from .classification import classify, VERSION as CLASSIFIER_VERSION
 
 
 class InvalidRecord(ValueError):
@@ -95,7 +96,8 @@ def load(source_file: Path, database: Path, mapping_file: Path | None = None) ->
     report = {"run_id": run_id, "source": source, "sha256": digest.hexdigest(),
               "raw": Counter(), "loaded": Counter(), "rejected": 0,
               "unmapped_statuses": Counter(), "unmapped_types": Counter(),
-              "unmapped_links": Counter(), "external_links": 0, "snapshot_only": True}
+              "unmapped_links": Counter(), "external_links": 0, "snapshot_only": True,
+              "work_categories": Counter(), "classifier_version": CLASSIFIER_VERSION}
     connection.execute("INSERT INTO ingestion_run VALUES (?,?,?,?,?,?,?,?)",
                        (run_id, source, str(source_file), digest.hexdigest(), now(), None, "running", None))
     connection.commit()
@@ -178,12 +180,17 @@ def load(source_file: Path, database: Path, mapping_file: Path | None = None) ->
                             raise InvalidRecord("Status and Type must be strings or null")
                         status_category = mappings["statuses"].get(status.casefold(), "unknown")
                         canonical_type = mappings["types"].get(item_type.casefold(), "unknown")
+                        title = required(row, "Title")
+                        category = classify(title, row.get("Description"))
                         connection.execute("INSERT INTO work_item VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                                            (key(source_id), project_id, source, required(row, "Issue_Key"), row.get("URL"),
-                                            canonical_type, required(row, "Title"), row.get("Description"), status, status_category,
+                                            canonical_type, title, row.get("Description"), status, status_category,
                                             row.get("Resolution"), estimate, "points" if estimate is not None else None,
                                             str(row["Assignee_ID"]) if row.get("Assignee_ID") is not None else None,
                                             created, resolved, updated, 1))
+                        connection.execute("INSERT INTO work_classification VALUES (?,?,?)",
+                                           (key(source_id), category, CLASSIFIER_VERSION))
+                        report["work_categories"][category] += 1
                         if status_category == "unknown":
                             report["unmapped_statuses"][status] += 1
                         if canonical_type == "unknown":

@@ -43,6 +43,20 @@ def main(argv=None):
     review.add_argument("--retrieval", choices=("lexical", "semantic"))
     review.add_argument("--embedding-model-dir", type=Path)
     review.add_argument("--embedding-cache", type=Path)
+    assess = commands.add_parser("assess", help="Detect risks with a trained local SLM, then present them with Claude")
+    assess.add_argument("--database", type=Path)
+    assess.add_argument("--epic")
+    assess.add_argument("--as-of")
+    assess.add_argument("--run-dir", type=Path, required=True)
+    assess.add_argument("--manifest", type=Path, help="Externally trained SLM provenance manifest")
+    assess.add_argument("--slm-endpoint", help="Loopback OpenAI-compatible server URL ending in /v1")
+    assess.add_argument("--model", help="Claude model ID; defaults to NABU_MODEL")
+    assess.add_argument("--evidence-limit", type=int)
+    assess.add_argument("--offline", action="store_true", default=None, help="Scripted wiring test; no AI analysis")
+    assess.add_argument("--resume", action="store_true")
+    assess.add_argument("--pause-after-prepare", action="store_true")
+    slm_schema = commands.add_parser("slm-schema", help="Export the detector JSON schema for the SLM training owner")
+    slm_schema.add_argument("--output", type=Path, required=True)
     prepare = commands.add_parser("prepare-model", help="Download and verify the pinned local embedding model")
     prepare.add_argument("--model-dir", type=Path, default=Path("data/models/bge-small-en-v1.5"))
     categories = commands.add_parser("discover-categories", help="Discover work categories from local ticket embeddings")
@@ -78,6 +92,28 @@ def main(argv=None):
                 args.report.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
         elif args.command == "replay":
             result = write_replay(args.database, args.epic, args.as_of, args.output)
+        elif args.command == "slm-schema":
+            from .risk.contracts import Detection
+            schema = Detection.model_json_schema()
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            with args.output.open("x", encoding="utf-8") as stream:
+                stream.write(json.dumps(schema, indent=2) + "\n")
+            result = {"schema": str(args.output.resolve()), "version": "nabu-assess-v1"}
+        elif args.command == "assess":
+            try:
+                from .risk.runner import run_assessment
+            except ImportError as exc:
+                raise ValueError('Install agent dependencies: pip install -e ".[agents]"') from exc
+            try:
+                result = run_assessment(args.database, args.epic, args.as_of, args.run_dir,
+                                        offline=args.offline, manifest_path=args.manifest,
+                                        slm_endpoint=args.slm_endpoint, claude_model=args.model,
+                                        evidence_limit=args.evidence_limit, resume=args.resume,
+                                        pause_after_prepare=args.pause_after_prepare)
+            except (ValueError, OSError, sqlite3.Error):
+                raise
+            except Exception as exc:
+                raise ValueError(f"Assessment failed ({type(exc).__name__}); check {args.run_dir} and use --resume after fixing the cause") from exc
         elif args.command == "review":
             try:
                 from .agents.runner import run_review
