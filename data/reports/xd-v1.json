@@ -1,0 +1,46 @@
+{
+  "run_id": "3e75c287-268c-46bf-a242-d1fd214cc951",
+  "source": "tawos-v1.1",
+  "sha256": "3fa70dda920103e3f4d5cca817f7d8cf29ee525fd09bfd7c2347994db150b4be",
+  "raw": {
+    "Affected_Version": 589,
+    "Change_Log": 43227,
+    "Comment": 4120,
+    "Component": 18,
+    "Fix_Version": 2817,
+    "Issue": 3707,
+    "Issue_Component": 1375,
+    "Issue_Link": 940,
+    "Project": 1,
+    "Sprint": 66,
+    "Version": 37
+  },
+  "loaded": {
+    "Project": 1,
+    "Issue": 3707,
+    "Change_Log": 43227,
+    "Issue_Link": 940
+  },
+  "rejected": 0,
+  "unmapped_statuses": {},
+  "unmapped_types": {},
+  "unmapped_links": {
+    "supersedes": 18,
+    "is superseded by": 18
+  },
+  "external_links": 0,
+  "snapshot_only": true,
+  "work_categories": {
+    "unassigned": 1450,
+    "testing": 500,
+    "documentation": 228,
+    "integration": 238,
+    "deployment": 589,
+    "data": 353,
+    "performance": 100,
+    "interface": 164,
+    "security": 85
+  },
+  "classifier_version": "work-topics-v1",
+  "status": "completed"
+}

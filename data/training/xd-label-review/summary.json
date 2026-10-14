@@ -1,0 +1,82 @@
+{
+  "status": "completed",
+  "generated_at": "2026-10-14T19:06:07.298130+00:00",
+  "review_status": "generated_unreviewed",
+  "human_approved": false,
+  "by_split": {
+    "train": {
+      "total_examples": 68,
+      "risk_examples": 4,
+      "no_risk_examples": 64,
+      "failed_examples": 0,
+      "missing_examples": 0,
+      "proposed_risks": 4
+    },
+    "validation": {
+      "total_examples": 2,
+      "risk_examples": 0,
+      "no_risk_examples": 2,
+      "failed_examples": 0,
+      "missing_examples": 0,
+      "proposed_risks": 0
+    }
+  },
+  "totals": {
+    "total_examples": 70,
+    "risk_examples": 4,
+    "no_risk_examples": 66,
+    "failed_examples": 0,
+    "missing_examples": 0,
+    "proposed_risks": 4
+  },
+  "proposal_input_errors": 0,
+  "candidate_path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/training/xd-label-review/generated-labels.jsonl",
+  "events_path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/training/xd-label-review/label-events.jsonl",
+  "review_path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/training/xd-label-review/review.md",
+  "summary_path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/training/xd-label-review/summary.json",
+  "limitations": [
+    "Mechanical validation does not establish semantic risk support or human approval.",
+    "Empty-risk targets mean insufficient supported risks in supplied text, not verified safety.",
+    "No test examples, GPU inference or training were used by this packaging tool.",
+    "The validation split has only two evidence-insufficient examples and no positive risk example; it cannot evaluate risk-detection recall or calibrate confidence.",
+    "A later metadata-only audit found unresolved memberships; current preparation blocks regeneration and some original development inputs would be quarantined. Resolve the audit and review a new explicit version before training."
+  ],
+  "preparation": {
+    "train_examples": 68,
+    "validation_examples": 2,
+    "excluded_development_plans": 19,
+    "exclusion_policy": "conservative_all_time_membership_reference_metadata",
+    "held_out_cutoff_plans_reconstructed": false,
+    "split_report_path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/training/xd-ticket-80-20/split-report.json"
+  },
+  "independent_assistant_review": {
+    "first_pass_risk_examples": 12,
+    "rejected_positive_examples": 8,
+    "revised_positive_examples": 3,
+    "retained_positive_examples": 1,
+    "additionally_checked_no_risk_examples": 2,
+    "human_approval": false
+  },
+  "semantic_review_path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/training/xd-label-review/semantic-review.jsonl",
+  "run_provenance_path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/training/xd-label-review/run-provenance.json",
+  "training_started": false,
+  "output_sha256": {
+    "semantic-review.jsonl": "af8efb09c829f8719ae5f8c3ae820fba4a7a4932b1a3f09140fc4e14a3ba1a94",
+    "final-proposals.jsonl": "a7f53f957eabd804a13526ade7d0a4e7545fc1ce794ef221b11ab382962b7183",
+    "run-provenance.json": "d0b669a3a975a9b3927d95cf949e5e25c3006d1c156d3cd5cd212954cbbeecbe",
+    "review.md": "4d83a1a53db21269f60fcf4c6fd95ac19c250836d38dc554dddebf2143c2c2af",
+    "initial-proposals.jsonl": "c7d084c0472e321c5bc5302cb83196086df8282c29d39309e30fcc50d645d62d",
+    "label-events.jsonl": "c73fd2ea59018a48a0db997a10118ae62226cda19335acfbe6a342533b362f63",
+    "generated-labels.jsonl": "db2e2e2661c2bcd6f669136c8c3516d8fd0678cf0c3620f8391f9d9b6f810aae",
+    "pre-publication-check.json": "4f3261d32b3cba85adc7cd57073bc74dfb4d8f54ff071cd7ade0bffbb43063f4"
+  },
+  "pre_publication_membership_audit": {
+    "path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/training/xd-label-review/pre-publication-check.json",
+    "status": "blocked_for_regeneration_or_training",
+    "quarantined_child_count": 70,
+    "affected_existing_development_inputs": 21,
+    "additional_development_plan_exclusions": 10,
+    "unresolved_held_out_parent_count": 1,
+    "original_inputs_preserved": true
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "policy": "chronological_80_percent_development_20_percent_test",
+  "unit": "ticket timeline boundaries applied to historical epic plans",
+  "development_only": true,
+  "total_tickets": 3707,
+  "development_tickets": 2965,
+  "test_tickets": 742,
+  "review_cutoff": "one day after epic creation",
+  "total_epics": 109,
+  "development_before_exclusions": 89,
+  "test_before_exclusions": 20,
+  "validation_within_development": 3,
+  "train_before": "2015-02-15T21:52:13.000000Z",
+  "eval_before": "2015-04-30T13:36:53.000000Z",
+  "counts": {
+    "train": 68,
+    "validation": 2
+  },
+  "excluded": [
+    {
+      "id": "XD-232",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:520"
+      ],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-233",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 2
+    },
+    {
+      "id": "XD-234",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-237",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-300",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-387",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 2
+    },
+    {
+      "id": "XD-696",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:871"
+      ],
+      "unresolved_reference_count": 3
+    },
+    {
+      "id": "XD-964",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-975",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-982",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:686"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-983",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-2062",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:1400"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-2152",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:564",
+        "tawos-v1.1:632",
+        "tawos-v1.1:909"
+      ],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-2156",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 3
+    },
+    {
+      "id": "XD-2157",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:156"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-2167",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 1
+    },
+    {
+      "id": "XD-2356",
+      "split": "train",
+      "reason": "unresolved membership references prevent complete group checks",
+      "item_ids": [],
+      "unresolved_reference_count": 6
+    },
+    {
+      "id": "XD-2663",
+      "split": "train",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:483"
+      ],
+      "unresolved_reference_count": 0
+    },
+    {
+      "id": "XD-2954",
+      "split": "validation",
+      "reason": "conservative all-time membership metadata overlaps chronological partitions",
+      "item_ids": [
+        "tawos-v1.1:1400",
+        "tawos-v1.1:871"
+      ],
+      "unresolved_reference_count": 1
+    }
+  ],
+  "labels_available": false,
+  "held_out_reconstructed": false,
+  "held_out_evidence_ids_excluded": 292,
+  "group_check": "conservative_all_time_membership_reference_metadata",
+  "limitations": [
+    "Current epic type is used only to select dataset locators; historical model fields are reconstructed independently.",
+    "A one-day review window may have little recoverable scope; inspect drafts before labelling.",
+    "Grouping catches shared observed plan tickets, not semantic duplicates.",
+    "Ratios are approximate when boundaries or exclusions affect counts.",
+    "Held-out cutoff plans are not reconstructed or emitted. Their roots and all-time observed members are withheld from development prior evidence, including prior scope reconstruction containing those references. HistoricalReader still loads underlying source records internally for historical reconstruction. Cross-partition exclusion uses membership reference metadata and can conservatively exclude memberships absent at a review cutoff."
+  ]
+}

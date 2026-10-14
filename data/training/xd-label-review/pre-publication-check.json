@@ -1,0 +1,297 @@
+{
+  "checked_at": "2026-10-14T19:14:57.064688+00:00",
+  "kind": "metadata_only_pre_publication_grouping_audit",
+  "status": "blocked_for_regeneration_or_training",
+  "human_approved": false,
+  "source_inputs_and_labels_changed": false,
+  "held_out_cutoff_plans_reconstructed": false,
+  "held_out_text_or_outcomes_reviewed": false,
+  "method": "Only IDs, source keys, project IDs, Jira_ID identity metadata, creation-time boundaries and all-time membership reference fields were queried. No freeze_evidence call, held-out snapshot reconstruction or outcome review. Existing supplied development inputs were checked by ID only.",
+  "current_preparation_guard": {
+    "unresolved_held_out_parent_ids": [
+      "XD-3342"
+    ],
+    "unresolved_held_out_parent_reference_count": 1,
+    "result": "Development-only preparation would stop before reconstruction/publication due to unresolved held-out parent references."
+  },
+  "membership_ambiguities": [],
+  "known_held_out_ids_excluded": 292,
+  "original_known_held_out_ids_excluded": 292,
+  "published_input_known_held_out_intersections": [],
+  "quarantined_child_count": 70,
+  "quarantined_child_ids": [
+    "tawos-v1.1:1003",
+    "tawos-v1.1:1005",
+    "tawos-v1.1:1501",
+    "tawos-v1.1:1571",
+    "tawos-v1.1:1598",
+    "tawos-v1.1:1757",
+    "tawos-v1.1:1758",
+    "tawos-v1.1:2108",
+    "tawos-v1.1:2223",
+    "tawos-v1.1:2257",
+    "tawos-v1.1:2408",
+    "tawos-v1.1:2423",
+    "tawos-v1.1:2464",
+    "tawos-v1.1:2555",
+    "tawos-v1.1:2659",
+    "tawos-v1.1:2660",
+    "tawos-v1.1:2672",
+    "tawos-v1.1:2693",
+    "tawos-v1.1:2735",
+    "tawos-v1.1:2793",
+    "tawos-v1.1:2847",
+    "tawos-v1.1:2867",
+    "tawos-v1.1:2885",
+    "tawos-v1.1:2935",
+    "tawos-v1.1:2944",
+    "tawos-v1.1:2948",
+    "tawos-v1.1:2949",
+    "tawos-v1.1:2950",
+    "tawos-v1.1:2954",
+    "tawos-v1.1:2955",
+    "tawos-v1.1:2957",
+    "tawos-v1.1:2984",
+    "tawos-v1.1:2994",
+    "tawos-v1.1:3114",
+    "tawos-v1.1:3145",
+    "tawos-v1.1:3157",
+    "tawos-v1.1:3169",
+    "tawos-v1.1:3170",
+    "tawos-v1.1:3185",
+    "tawos-v1.1:3194",
+    "tawos-v1.1:3199",
+    "tawos-v1.1:3205",
+    "tawos-v1.1:3211",
+    "tawos-v1.1:3274",
+    "tawos-v1.1:3275",
+    "tawos-v1.1:3290",
+    "tawos-v1.1:3352",
+    "tawos-v1.1:3353",
+    "tawos-v1.1:3354",
+    "tawos-v1.1:3355",
+    "tawos-v1.1:3356",
+    "tawos-v1.1:3360",
+    "tawos-v1.1:3400",
+    "tawos-v1.1:3422",
+    "tawos-v1.1:3446",
+    "tawos-v1.1:3448",
+    "tawos-v1.1:3449",
+    "tawos-v1.1:3455",
+    "tawos-v1.1:3472",
+    "tawos-v1.1:3478",
+    "tawos-v1.1:3489",
+    "tawos-v1.1:3537",
+    "tawos-v1.1:3554",
+    "tawos-v1.1:3559",
+    "tawos-v1.1:3569",
+    "tawos-v1.1:3587",
+    "tawos-v1.1:3624",
+    "tawos-v1.1:3727",
+    "tawos-v1.1:3763",
+    "tawos-v1.1:686"
+  ],
+  "additional_development_plan_exclusions": [
+    "XD-1141",
+    "XD-1610",
+    "XD-1820",
+    "XD-235",
+    "XD-239",
+    "XD-2399",
+    "XD-464",
+    "XD-836",
+    "XD-963",
+    "XD-996"
+  ],
+  "removed_development_plan_exclusions": [],
+  "existing_development_inputs_with_quarantined_ids": [
+    {
+      "id": "XD-177",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3624"
+      ]
+    },
+    {
+      "id": "XD-238",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3624"
+      ]
+    },
+    {
+      "id": "XD-697",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3205",
+        "tawos-v1.1:3356"
+      ]
+    },
+    {
+      "id": "XD-706",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3356"
+      ]
+    },
+    {
+      "id": "XD-742",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3356"
+      ]
+    },
+    {
+      "id": "XD-895",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3145"
+      ]
+    },
+    {
+      "id": "XD-963",
+      "split": "train",
+      "quarantined_plan_ids": [
+        "tawos-v1.1:3114"
+      ],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3194"
+      ]
+    },
+    {
+      "id": "XD-1267",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3194"
+      ]
+    },
+    {
+      "id": "XD-1275",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3290",
+        "tawos-v1.1:3422"
+      ]
+    },
+    {
+      "id": "XD-1317",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3157"
+      ]
+    },
+    {
+      "id": "XD-1473",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3157"
+      ]
+    },
+    {
+      "id": "XD-1606",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3157",
+        "tawos-v1.1:3356",
+        "tawos-v1.1:3422"
+      ]
+    },
+    {
+      "id": "XD-1607",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:2423"
+      ]
+    },
+    {
+      "id": "XD-1608",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:2423"
+      ]
+    },
+    {
+      "id": "XD-1609",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:2464"
+      ]
+    },
+    {
+      "id": "XD-1610",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:2423"
+      ]
+    },
+    {
+      "id": "XD-1820",
+      "split": "train",
+      "quarantined_plan_ids": [
+        "tawos-v1.1:2223"
+      ],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:2423",
+        "tawos-v1.1:3157"
+      ]
+    },
+    {
+      "id": "XD-1821",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3157"
+      ]
+    },
+    {
+      "id": "XD-2134",
+      "split": "train",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:2223"
+      ]
+    },
+    {
+      "id": "XD-2399",
+      "split": "train",
+      "quarantined_plan_ids": [
+        "tawos-v1.1:1501",
+        "tawos-v1.1:1757",
+        "tawos-v1.1:1758"
+      ],
+      "quarantined_prior_ids": []
+    },
+    {
+      "id": "XD-2978",
+      "split": "validation",
+      "quarantined_plan_ids": [],
+      "quarantined_prior_ids": [
+        "tawos-v1.1:3360"
+      ]
+    }
+  ],
+  "source_draft_sha256": {
+    "train": "aeecac0051ccd7b02a94c701fd25d188e3a7704519e6b8fa8f9d306e35557b38",
+    "validation": "0662ae5ea87a9fef20477ff30917e8513be9fc8a35677f1478983b60f7fd4b70"
+  },
+  "current_code_sha256": {
+    "scripts/prepare-slm-cases.py": "14afc4646d54c1eaae79bd9b8ef421b2a223a1e47e3075c241fae06fb24d1274",
+    "nabu/agents/evidence.py": "4c78c0606a28fe28ba7af94817b8e13fa1c7339243940567f97ec91732011061"
+  },
+  "disposition": "Publish the frozen original run as generated_unreviewed review candidates only. Resolve membership uncertainty and explicitly prepare/review a new version before training; do not silently replace original inputs or fingerprints. Schema/citation validation remains separate from this preparation safety audit."
+}

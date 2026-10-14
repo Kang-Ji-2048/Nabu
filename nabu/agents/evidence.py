@@ -6,7 +6,8 @@ from ..replay import HistoricalReader
 from ..text import bounded_item, text_of, tokens
 
 
-def freeze_evidence(database: Path, epic: str, cutoff: str):
+def freeze_evidence(database: Path, epic: str, cutoff: str, *, exclude_evidence_ids=()):
+    excluded = set(exclude_evidence_ids)
     reader = HistoricalReader(database, epic, cutoff)
     try:
         plan, _ = reader.plan()
@@ -14,7 +15,7 @@ def freeze_evidence(database: Path, epic: str, cutoff: str):
         targets = {item["id"] for item in [plan["root"], *plan["members"]]}
         corpus, scopes = {}, {}
         for item_id, item in reader.items.items():
-            if item_id in targets or item["created_at"] > reader.cutoff:
+            if item_id in targets or item_id in excluded or item["created_at"] > reader.cutoff:
                 continue
             historical, _ = reader.item_at(item_id)
             # Unknown text cannot be used to rank or justify a candidate.
@@ -22,6 +23,13 @@ def freeze_evidence(database: Path, epic: str, cutoff: str):
                 corpus[item_id] = bounded_item(historical)
         for item_id in corpus:
             if any(event["field"].casefold() == "epic child" and event["at"] <= reader.cutoff for event in reader.events[item_id]):
+                # Do not reconstruct a prior scope containing withheld references.
+                # Membership checks use IDs only; underlying source tables are
+                # still loaded by HistoricalReader for historical reconstruction.
+                if excluded:
+                    changes, _ = reader.membership_changes(item_id)
+                    if excluded.intersection(changes):
+                        continue
                 scope, _ = reader.plan(item_id)
                 scopes[item_id] = [bounded_item(member) for member in scope["members"] if member["id"] not in targets]
         payload = {"plan": plan, "corpus": corpus, "scopes": scopes}

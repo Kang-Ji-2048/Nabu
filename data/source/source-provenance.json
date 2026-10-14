@@ -1,0 +1,20 @@
+{
+  "dataset": "TAWOS v1.1",
+  "article_id": 21308124,
+  "file_id": 37806375,
+  "source_url": "https://ndownloader.figshare.com/files/37806375",
+  "archive_bytes": 637550449,
+  "archive_md5": "e9c5ecc7649d55f0cf2fb4efb5664494",
+  "archive_sha256": "278984f788008c58d338e1f4aa195eae8e5b15b4153e51c247659ef8465917f7",
+  "zip_entries": [
+    {
+      "name": "TAWOS.sql",
+      "size": 4313856480
+    }
+  ],
+  "extracted_sql": {
+    "path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/source/TAWOS.sql",
+    "size": 4313856480,
+    "sha256": "97dc0deaaa02ac75017d2b9cbe0765ac3377b5d7c10f9f88bc62de838f34badd"
+  }
+}

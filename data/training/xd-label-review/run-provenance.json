@@ -1,0 +1,49 @@
+{
+  "repository": "https://github.com/Kang-Ji-2048/Nabu.git",
+  "base_commit": "968cbe8c01f8bb8d311c3c61c1a3cb5126be459d",
+  "working_tree_contains_uncommitted_implementation": true,
+  "code_sha256": {
+    "scripts/prepare-slm-cases.py": "9ae399344113468ceccc56c94ee9b87debdc7394c7c67f61412815b1a521b678",
+    "scripts/validate-slm-candidates.py": "e3ebc800a5f034a2f84f6832c2351490acaa6af017ec6774f40c458dceae8da0",
+    "nabu/agents/evidence.py": "4c78c0606a28fe28ba7af94817b8e13fa1c7339243940567f97ec91732011061",
+    "nabu/risk/contracts.py": "7499b110368735236d7f79be98a08fe44b658457d4a16813467833031d9c2ba6",
+    "nabu/risk/runner.py": "3d9e0f6290404954d5c4f289dd47df15c1cd540e6e8ace7f60745a8acf67f364"
+  },
+  "python_dependencies": {
+    "pydantic": "2.14.1",
+    "langchain-core": "1.6.10"
+  },
+  "dataset_source": {
+    "dataset": "TAWOS v1.1",
+    "article_id": 21308124,
+    "file_id": 37806375,
+    "source_url": "https://ndownloader.figshare.com/files/37806375",
+    "archive_bytes": 637550449,
+    "archive_md5": "e9c5ecc7649d55f0cf2fb4efb5664494",
+    "archive_sha256": "278984f788008c58d338e1f4aa195eae8e5b15b4153e51c247659ef8465917f7",
+    "zip_entries": [
+      {
+        "name": "TAWOS.sql",
+        "size": 4313856480
+      }
+    ],
+    "extracted_sql": {
+      "path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/source/TAWOS.sql",
+      "size": 4313856480,
+      "sha256": "97dc0deaaa02ac75017d2b9cbe0765ac3377b5d7c10f9f88bc62de838f34badd"
+    }
+  },
+  "raw_project_sha256": "3fa70dda920103e3f4d5cca817f7d8cf29ee525fd09bfd7c2347994db150b4be",
+  "etl_report_path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/reports/xd-v1.json",
+  "split_report_path": "/Users/chrisking/Documents/ChatGPT/Nabu/data/training/xd-ticket-80-20/split-report.json",
+  "source_draft_sha256": {
+    "train": "aeecac0051ccd7b02a94c701fd25d188e3a7704519e6b8fa8f9d306e35557b38",
+    "validation": "0662ae5ea87a9fef20477ff30917e8513be9fc8a35677f1478983b60f7fd4b70"
+  },
+  "label_method": "Codex assistant review of supplied historical inputs, followed by an independent assistant challenge of all first-pass positive targets and two abstentions",
+  "human_approved": false,
+  "training_started": false,
+  "gpu_inference_started": false,
+  "held_out_cutoff_plans_reconstructed": false,
+  "source_preload_note": "Held-out cutoff plans are not reconstructed or emitted. Their roots and all-time observed members are withheld from development prior evidence, including prior scope reconstruction containing those references. HistoricalReader still loads underlying source records internally for historical reconstruction. Cross-partition exclusion uses membership reference metadata and can conservatively exclude memberships absent at a review cutoff."
+}
