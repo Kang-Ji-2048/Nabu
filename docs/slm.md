@@ -24,6 +24,11 @@ The local dataset builder and Apple Silicon training script are documented in
 [slm-training.md](slm-training.md). Reviewed risk targets are required; the current user-selected AI-reviewed experimental package and Mac preparation are described in [training-handoff.md](training-handoff.md). No trained risk model is bundled or claimed to exist. Live detection and
 report quality have not been evaluated. Offline mode tests wiring only.
 
+The opt-in [v2 workflow schemas](risk-workflow-schema.md) describe separate
+confidence, company policy, manager review and report handoff records. They
+define interfaces for future wiring; the current `assess` runtime, v1 detector
+contract and adapter training remain unchanged.
+
 ## Try without model services
 
 Install the existing agent extra and import data first:

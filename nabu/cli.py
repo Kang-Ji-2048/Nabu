@@ -8,6 +8,7 @@ from .extract import export_mysql
 from .dump import export_dump, profile_dump
 from .pipeline import load
 from .replay import write_replay
+from .risk.schema import CONTRACT_NAMES
 
 
 def main(argv=None):
@@ -55,8 +56,10 @@ def main(argv=None):
     assess.add_argument("--offline", action="store_true", default=None, help="Scripted wiring test; no AI analysis")
     assess.add_argument("--resume", action="store_true")
     assess.add_argument("--pause-after-prepare", action="store_true")
-    slm_schema = commands.add_parser("slm-schema", help="Export the detector JSON schema for the SLM training owner")
+    slm_schema = commands.add_parser("slm-schema", help="Export the v1 detector or versioned risk workflow JSON schemas")
     slm_schema.add_argument("--output", type=Path, required=True)
+    slm_schema.add_argument("--contract", choices=CONTRACT_NAMES, default="detection",
+                            help="Defaults to the trained v1 detector; workflow exports the new assessment, policy, manager and report contracts")
     prepare = commands.add_parser("prepare-model", help="Download and verify the pinned local embedding model")
     prepare.add_argument("--model-dir", type=Path, default=Path("data/models/bge-small-en-v1.5"))
     categories = commands.add_parser("discover-categories", help="Discover work categories from local ticket embeddings")
@@ -117,12 +120,12 @@ def main(argv=None):
         elif args.command == "replay":
             result = write_replay(args.database, args.epic, args.as_of, args.output)
         elif args.command == "slm-schema":
-            from .risk.contracts import Detection
-            schema = Detection.model_json_schema()
+            from .risk.schema import risk_schema
+            schema, version = risk_schema(args.contract)
             args.output.parent.mkdir(parents=True, exist_ok=True)
             with args.output.open("x", encoding="utf-8") as stream:
                 stream.write(json.dumps(schema, indent=2) + "\n")
-            result = {"schema": str(args.output.resolve()), "version": "nabu-assess-v1"}
+            result = {"schema": str(args.output.resolve()), "version": version}
         elif args.command == "assess":
             try:
                 from .risk.runner import run_assessment

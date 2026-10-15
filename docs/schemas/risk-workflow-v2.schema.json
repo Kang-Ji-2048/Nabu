@@ -1,0 +1,722 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:nabu:risk-workflow:v2",
+  "$defs": {
+    "AssessedRisk": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "risk_type": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Risk Type",
+          "type": "string"
+        },
+        "claim": {
+          "maxLength": 1500,
+          "minLength": 1,
+          "title": "Claim",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 3000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "suggested_action": {
+          "maxLength": 1500,
+          "minLength": 1,
+          "title": "Suggested Action",
+          "type": "string"
+        },
+        "target_item_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Target Item Ids",
+          "type": "array"
+        },
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/FrozenCitation"
+          },
+          "maxItems": 10,
+          "minItems": 2,
+          "title": "Citations",
+          "type": "array"
+        },
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceAssessment"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/PolicyDecision"
+        }
+      },
+      "required": [
+        "id",
+        "risk_type",
+        "claim",
+        "rationale",
+        "suggested_action",
+        "target_item_ids",
+        "citations",
+        "confidence",
+        "risk_level"
+      ],
+      "title": "AssessedRisk",
+      "type": "object"
+    },
+    "AssessmentBundle": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "nabu-assessment-v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "assessment_id": {
+          "minLength": 1,
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "plan_id": {
+          "minLength": 1,
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "as_of": {
+          "format": "date-time",
+          "title": "As Of",
+          "type": "string"
+        },
+        "evidence_fingerprint": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Evidence Fingerprint",
+          "type": "string"
+        },
+        "model_input_fingerprint": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Model Input Fingerprint",
+          "type": "string"
+        },
+        "model_provider": {
+          "enum": [
+            "local",
+            "anthropic"
+          ],
+          "title": "Model Provider",
+          "type": "string"
+        },
+        "model_id": {
+          "minLength": 1,
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_artifact_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model Artifact Sha256"
+        },
+        "prompt_version": {
+          "minLength": 1,
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "policy": {
+          "$ref": "#/$defs/CompanyRiskPolicy"
+        },
+        "risks": {
+          "items": {
+            "$ref": "#/$defs/AssessedRisk"
+          },
+          "maxItems": 8,
+          "title": "Risks",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "assessment_id",
+        "plan_id",
+        "as_of",
+        "evidence_fingerprint",
+        "model_input_fingerprint",
+        "model_provider",
+        "model_id",
+        "model_artifact_sha256",
+        "prompt_version",
+        "policy",
+        "risks",
+        "limitations"
+      ],
+      "title": "AssessmentBundle",
+      "type": "object"
+    },
+    "CompanyRiskPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "nabu-risk-policy-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "company_id": {
+          "minLength": 1,
+          "title": "Company Id",
+          "type": "string"
+        },
+        "policy_id": {
+          "minLength": 1,
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "policy_version": {
+          "minLength": 1,
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "levels": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Levels",
+          "type": "array"
+        },
+        "rules": {
+          "items": {
+            "$ref": "#/$defs/PolicyRule"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Rules",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "company_id",
+        "policy_id",
+        "policy_version",
+        "levels",
+        "rules"
+      ],
+      "title": "CompanyRiskPolicy",
+      "type": "object"
+    },
+    "ConfidenceAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "target": {
+          "const": "warning_supported",
+          "title": "Target",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "uncalibrated",
+            "calibrated",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "evidence_strength": {
+          "enum": [
+            "weak",
+            "moderate",
+            "strong",
+            "unknown"
+          ],
+          "title": "Evidence Strength",
+          "type": "string"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Score"
+        },
+        "calibrator_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Calibrator Id"
+        },
+        "calibrator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Calibrator Version"
+        }
+      },
+      "required": [
+        "target",
+        "status",
+        "evidence_strength",
+        "rationale",
+        "score",
+        "calibrator_id",
+        "calibrator_version"
+      ],
+      "title": "ConfidenceAssessment",
+      "type": "object"
+    },
+    "FrozenCitation": {
+      "additionalProperties": false,
+      "properties": {
+        "item_id": {
+          "minLength": 1,
+          "title": "Item Id",
+          "type": "string"
+        },
+        "field": {
+          "enum": [
+            "title",
+            "description"
+          ],
+          "title": "Field",
+          "type": "string"
+        },
+        "quote": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "item_id",
+        "field",
+        "quote"
+      ],
+      "title": "FrozenCitation",
+      "type": "object"
+    },
+    "ManagerFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "enum": [
+            "schema",
+            "evidence",
+            "support",
+            "counterexamples",
+            "solution",
+            "confidence",
+            "policy",
+            "report_fidelity",
+            "coverage"
+          ],
+          "title": "Check",
+          "type": "string"
+        },
+        "risk_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Risk Id"
+        },
+        "decision": {
+          "enum": [
+            "pass",
+            "revise",
+            "needs_review"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "check",
+        "risk_id",
+        "decision",
+        "reason"
+      ],
+      "title": "ManagerFinding",
+      "type": "object"
+    },
+    "ManagerReview": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "nabu-manager-review-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "assessment_id": {
+          "minLength": 1,
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "assessment_fingerprint": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Assessment Fingerprint",
+          "type": "string"
+        },
+        "presentation_fingerprint": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Presentation Fingerprint"
+        },
+        "stage": {
+          "enum": [
+            "risk_review",
+            "report_review"
+          ],
+          "title": "Stage",
+          "type": "string"
+        },
+        "decision": {
+          "enum": [
+            "pass",
+            "revise",
+            "needs_review"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/ManagerFinding"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Findings",
+          "type": "array"
+        },
+        "reviewer_id": {
+          "minLength": 1,
+          "title": "Reviewer Id",
+          "type": "string"
+        },
+        "reviewer_version": {
+          "minLength": 1,
+          "title": "Reviewer Version",
+          "type": "string"
+        },
+        "round": {
+          "maximum": 2,
+          "minimum": 1,
+          "title": "Round",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema_version",
+        "assessment_id",
+        "assessment_fingerprint",
+        "presentation_fingerprint",
+        "stage",
+        "decision",
+        "findings",
+        "reviewer_id",
+        "reviewer_version",
+        "round"
+      ],
+      "title": "ManagerReview",
+      "type": "object"
+    },
+    "PolicyDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "assigned",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "level": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Level"
+        },
+        "rule_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Rule Id"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "missing_inputs": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Missing Inputs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "level",
+        "rule_id",
+        "rationale",
+        "missing_inputs"
+      ],
+      "title": "PolicyDecision",
+      "type": "object"
+    },
+    "PolicyRule": {
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "minLength": 1,
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "level": {
+          "minLength": 1,
+          "title": "Level",
+          "type": "string"
+        },
+        "criteria": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Criteria",
+          "type": "array"
+        }
+      },
+      "required": [
+        "rule_id",
+        "level",
+        "criteria"
+      ],
+      "title": "PolicyRule",
+      "type": "object"
+    },
+    "PresentationV2": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "nabu-presentation-v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "assessment_id": {
+          "minLength": 1,
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "assessment_fingerprint": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Assessment Fingerprint",
+          "type": "string"
+        },
+        "sections": {
+          "items": {
+            "$ref": "#/$defs/ReportSectionV2"
+          },
+          "maxItems": 8,
+          "title": "Sections",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "assessment_id",
+        "assessment_fingerprint",
+        "sections"
+      ],
+      "title": "PresentationV2",
+      "type": "object"
+    },
+    "ReportHandoff": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "nabu-report-handoff-v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "assessment": {
+          "$ref": "#/$defs/AssessmentBundle"
+        },
+        "assessment_fingerprint": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Assessment Fingerprint",
+          "type": "string"
+        },
+        "manager_review": {
+          "$ref": "#/$defs/ManagerReview"
+        }
+      },
+      "required": [
+        "schema_version",
+        "assessment",
+        "assessment_fingerprint",
+        "manager_review"
+      ],
+      "title": "ReportHandoff",
+      "type": "object"
+    },
+    "ReportSectionV2": {
+      "additionalProperties": false,
+      "properties": {
+        "risk_id": {
+          "minLength": 1,
+          "title": "Risk Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "explanation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "risk_id",
+        "title",
+        "explanation"
+      ],
+      "title": "ReportSectionV2",
+      "type": "object"
+    },
+    "ReviewedReport": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "nabu-reviewed-report-v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "handoff": {
+          "$ref": "#/$defs/ReportHandoff"
+        },
+        "presentation": {
+          "$ref": "#/$defs/PresentationV2"
+        },
+        "manager_review": {
+          "$ref": "#/$defs/ManagerReview"
+        }
+      },
+      "required": [
+        "schema_version",
+        "handoff",
+        "presentation",
+        "manager_review"
+      ],
+      "title": "ReviewedReport",
+      "type": "object"
+    }
+  },
+  "title": "Nabu risk workflow v2",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/AssessmentBundle"
+    },
+    {
+      "$ref": "#/$defs/CompanyRiskPolicy"
+    },
+    {
+      "$ref": "#/$defs/ManagerReview"
+    },
+    {
+      "$ref": "#/$defs/ReportHandoff"
+    },
+    {
+      "$ref": "#/$defs/PresentationV2"
+    },
+    {
+      "$ref": "#/$defs/ReviewedReport"
+    }
+  ]
+}
