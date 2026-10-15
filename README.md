@@ -1,5 +1,14 @@
 # Nabu: Delivery Risk Reviewer
 
+## Local Laya risk labelling
+
+The [Laya setup guide](docs/laya.md) runs ticket risk labelling locally on Windows,
+Linux or Apple Silicon, with a pinned downloadable checkpoint, evidence checks,
+resumable batches and training exports. See the [Spring XD label specification](docs/label-spec.md)
+and [labelling workflow](docs/labelling.md). SLM training remains separate.
+The current zero-shot Laya checkpoint is experimental: the first five XD tickets
+all abstained at confidence 0.8, so it is not yet a validated dataset labeller.
+
 ## SLM-to-Claude architecture
 
 The new flow is **ingest → normalise and classify → SQLite → local SLM risk

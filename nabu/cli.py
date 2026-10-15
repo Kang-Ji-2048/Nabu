@@ -57,6 +57,41 @@ def main(argv=None):
     assess.add_argument("--pause-after-prepare", action="store_true")
     slm_schema = commands.add_parser("slm-schema", help="Export the detector JSON schema for the SLM training owner")
     slm_schema.add_argument("--output", type=Path, required=True)
+    labels = commands.add_parser("label-data", help="Export automatic ticket-linked weak labels from history")
+    labels.add_argument("--database", type=Path, default=Path("data/nabu.sqlite"))
+    labels.add_argument("--project", required=True)
+    labels.add_argument("--as-of", required=True)
+    labels.add_argument("--observed-through", required=True)
+    labels.add_argument("--output", type=Path, required=True)
+    classifier = commands.add_parser("classify-risks", help="Classify cutoff-bound tickets with local Laya or an optional hosted teacher")
+    classifier.add_argument("--dataset", type=Path, required=True)
+    classifier.add_argument("--output", type=Path, required=True)
+    classifier.add_argument("--model", required=True, help="Local Laya model directory or hosted model ID")
+    classifier.add_argument("--min-confidence", type=float, default=0.8)
+    classifier.add_argument("--limit", type=int, default=100, help="Maximum tickets in this run")
+    classifier.add_argument("--provider", choices=("jev", "claude", "laya"), default="jev")
+    classifier.add_argument("--device", choices=("cpu", "cuda", "auto"), default="cpu", help="Local Laya inference device")
+    local_teacher = commands.add_parser("prepare-laya", help="Download, verify and fingerprint the pinned local Laya checkpoint")
+    local_teacher.add_argument("--model-dir", type=Path, default=Path("data/models/laya-typed-decisions"))
+    consensus = commands.add_parser("combine-labels", help="Combine evidence-backed teacher votes without mixing future outcomes")
+    consensus.add_argument("--dataset", type=Path, required=True)
+    consensus.add_argument("--predictions", type=Path, action="append", required=True)
+    consensus.add_argument("--output", type=Path, required=True)
+    reference = commands.add_parser("sample-label-reference", help="Prepare a blinded reference sample for independent review")
+    reference.add_argument("--dataset", type=Path, required=True)
+    reference.add_argument("--predictions", type=Path)
+    reference.add_argument("--output", type=Path, required=True)
+    reference.add_argument("--size", type=int, default=100)
+    evaluate = commands.add_parser("evaluate-labels", help="Measure teacher quality against independently reviewed reference labels")
+    evaluate.add_argument("--dataset", type=Path, required=True)
+    evaluate.add_argument("--predictions", type=Path, required=True)
+    evaluate.add_argument("--reference", type=Path, required=True)
+    evaluate.add_argument("--output", type=Path, required=True)
+    splits = commands.add_parser("split-label-data", help="Build chronological splits with related-ticket and duplicate quarantine")
+    splits.add_argument("--dataset", type=Path, action="append", required=True)
+    splits.add_argument("--train-through", required=True)
+    splits.add_argument("--validation-through", required=True)
+    splits.add_argument("--output", type=Path, required=True)
     prepare = commands.add_parser("prepare-model", help="Download and verify the pinned local embedding model")
     prepare.add_argument("--model-dir", type=Path, default=Path("data/models/bge-small-en-v1.5"))
     categories = commands.add_parser("discover-categories", help="Discover work categories from local ticket embeddings")
@@ -116,6 +151,33 @@ def main(argv=None):
                 args.report.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
         elif args.command == "replay":
             result = write_replay(args.database, args.epic, args.as_of, args.output)
+        elif args.command == "label-data":
+            from .labelling import write_weak_labels
+            result = write_weak_labels(args.database, args.project, args.as_of, args.observed_through, args.output)
+        elif args.command == "classify-risks":
+            from .risk.classifier import classify_dataset
+            try:
+                result = classify_dataset(args.dataset, args.output, args.model,
+                                          min_confidence=args.min_confidence, limit=args.limit, provider=args.provider, device=args.device)
+            except (ValueError, OSError, sqlite3.Error):
+                raise
+            except Exception as exc:
+                raise ValueError(f"Classification failed ({type(exc).__name__}); rerun the same command to resume {args.output}") from exc
+        elif args.command == "prepare-laya":
+            from .risk.laya import prepare_laya
+            result = prepare_laya(args.model_dir)
+        elif args.command == "combine-labels":
+            from .risk.label_quality import combine_labels
+            result = combine_labels(args.dataset, args.predictions, args.output)
+        elif args.command == "sample-label-reference":
+            from .risk.label_quality import make_reference
+            result = make_reference(args.dataset, args.predictions, args.output, args.size)
+        elif args.command == "evaluate-labels":
+            from .risk.label_quality import evaluate_labels
+            result = evaluate_labels(args.dataset, args.predictions, args.reference, args.output)
+        elif args.command == "split-label-data":
+            from .risk.label_quality import split_data
+            result = split_data(args.dataset, args.output, args.train_through, args.validation_through)
         elif args.command == "slm-schema":
             from .risk.contracts import Detection
             schema = Detection.model_json_schema()

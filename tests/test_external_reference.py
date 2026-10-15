@@ -28,7 +28,7 @@ class ExternalReferenceTests(unittest.TestCase):
             roster.mkdir()
             locator = {'id': 'MESOS-1', 'epic': 'MESOS-1', 'item_id': 'external', 'as_of': '2020-01-01', 'split': 'external_test'}
             raw = json.dumps(locator)+'\n'
-            (roster/'case-roster.jsonl').write_text(raw)
+            (roster/'case-roster.jsonl').write_bytes(raw.encode())
             protocol = {'project': 'MESOS', 'sample_cases': 1, 'roster_sha256': hashlib.sha256(raw.encode()).hexdigest()}
             (roster/'protocol.json').write_text(json.dumps(protocol))
             development = root/'dev.jsonl'
@@ -44,7 +44,7 @@ class ExternalReferenceTests(unittest.TestCase):
                 draft = json.loads((root/'out/case-drafts.jsonl').read_text())
                 self.assertEqual(draft['split'], 'external_test')
                 self.assertNotIn('target', draft)
-                (roster/'case-roster.jsonl').write_text(raw+' ')
+                (roster/'case-roster.jsonl').write_bytes((raw+' ').encode())
                 with self.assertRaisesRegex(ValueError, 'roster changed'):
                     external.prepare(dbpath, roster, root/'bad', development, ['scope_gap'])
                 self.assertFalse((root/'bad').exists())
@@ -60,7 +60,7 @@ class ExternalReferenceTests(unittest.TestCase):
                 db.execute("INSERT INTO work_item VALUES ('external','MESOS-1')")
             locator = {'id': 'MESOS-1', 'epic': 'MESOS-1', 'item_id': 'external', 'as_of': '2010-01-01', 'split': 'external_test'}
             raw = json.dumps(locator)+'\n'
-            (root/'case-roster.jsonl').write_text(raw)
+            (root/'case-roster.jsonl').write_bytes(raw.encode())
             (root/'protocol.json').write_text(json.dumps({'project': 'MESOS', 'sample_cases': 1,
                                                          'roster_sha256': hashlib.sha256(raw.encode()).hexdigest()}))
             dev = {'split': 'train', 'as_of': '2019-01-01', 'input': {'plan': {'root': {'id': 'external'}, 'members': []}, 'prior_work': []}}

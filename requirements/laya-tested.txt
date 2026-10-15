@@ -1,0 +1,7 @@
+# Core versions used for local CPU validation; platform-specific torch wheels vary.
+laya==0.4.7
+torch==2.14.1
+transformers==5.19.0
+numpy==2.5.4
+huggingface-hub==2.2.0
+safetensors==0.8.0

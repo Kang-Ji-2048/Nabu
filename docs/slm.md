@@ -1,5 +1,9 @@
 # SLM risk detection and Claude reporting
 
+For a separate local ticket-labelling teacher, see [Laya](laya.md). Its weak ticket
+labels are auxiliary supervision, not replacements for the reviewed plan-level
+targets used by the training workflow below.
+
 The new `assess` command implements the SLM-to-Claude architecture. The existing
 `review` command remains the LangGraph investigator/critic baseline. `assess`
 does not use Claude to detect risks or silently substitute another detector.

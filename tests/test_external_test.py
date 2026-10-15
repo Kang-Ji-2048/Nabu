@@ -1,4 +1,5 @@
 import json
+from contextlib import closing
 from pathlib import Path
 import sqlite3
 import subprocess
@@ -15,7 +16,7 @@ class ExternalTestIsolationTests(unittest.TestCase):
             root = Path(directory)
             db_path = root / 'source.sqlite'
             # No title, description or outcome columns: selection cannot read them.
-            with sqlite3.connect(db_path) as db:
+            with closing(sqlite3.connect(db_path)) as db, db:
                 db.execute('CREATE TABLE project(id TEXT,source_key TEXT)')
                 db.execute("INSERT INTO project VALUES ('external','MESOS')")
                 db.execute('CREATE TABLE work_item(id TEXT,source_key TEXT,project_id TEXT,created_at TEXT,type TEXT)')

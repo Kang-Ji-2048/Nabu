@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class TrainingHandoffTests(unittest.TestCase):
+    @unittest.skipIf(os.name == 'nt', 'POSIX training launcher requires Unix executable semantics')
     def test_preparation_script_never_starts_labelled_training(self):
         with tempfile.TemporaryDirectory(prefix='nabu handoff ') as directory:
             root = Path(directory)
