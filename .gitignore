@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 .venv/
+.venv-laya/
 .uv-cache/
 .env
 *.egg-info/
@@ -36,3 +37,12 @@ __pycache__/
 /data/training/xd-label-review/generation.log
 /data/training/xd-label-review/review-notes.md
 /data/training/xd-label-review/validation-summary.json
+
+# Local Laya smoke runs and automatically generated weak-label experiments.
+/data/laya-smoke/
+/data/training/*-laya-v*/
+/data/training/*-reference-v*/
+/data/training/xd-2013-q4-v2/
+/data/training/xd-2014-q1-weak-v1/
+/data/training/xd-*-jev-v*/
+/data/reports/laya-development-controls*.json
